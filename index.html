@@ -57,10 +57,6 @@
     }
 
 
-    /* =========================================
-       KAMERA
-       ========================================= */
-
     .camera-box {
 
       background: white;
@@ -171,10 +167,6 @@
     }
 
 
-    /* =========================================
-       OBRAZ KAMERY
-       ========================================= */
-
     #reader {
 
       width: 100%;
@@ -189,10 +181,6 @@
 
     }
 
-
-    /* =========================================
-       STAV
-       ========================================= */
 
     #cameraResult {
 
@@ -236,10 +224,6 @@
     }
 
 
-    /* =========================================
-       OSTRÝ REŽIM
-       ========================================= */
-
     #officialControls {
 
       display: none;
@@ -263,10 +247,6 @@
 
     }
 
-
-    /* =========================================
-       PANEL
-       ========================================= */
 
     #panelContainer {
 
@@ -297,12 +277,16 @@
     ) {
 
       .container {
+
         padding: 7px;
+
       }
 
 
       h1 {
+
         font-size: 23px;
+
       }
 
     }
@@ -336,7 +320,7 @@
 
 
     <!-- ======================================= -->
-    <!-- TESTOVACÍ OVLÁDÁNÍ -->
+    <!-- NASTAVENÍ -->
     <!-- ======================================= -->
 
     <div id="setupControls">
@@ -349,9 +333,8 @@
 
         <br><br>
 
-        Nejdřív naskenuj jednu kartičku
-        nanečisto. Při testu se nic
-        nezapisuje do docházky.
+        Naskenuj jednu kartičku nanečisto.
+        Při testu se nic nezapisuje.
 
       </div>
 
@@ -401,15 +384,17 @@
 
 
     <!-- ======================================= -->
-    <!-- OSTRÉ OVLÁDÁNÍ -->
+    <!-- OSTRÝ REŽIM -->
     <!-- ======================================= -->
 
     <div id="officialControls">
 
 
-      <div class="official-label">
+      <div
+        id="officialLabel"
+        class="official-label">
 
-        🟢 Ostré skenování zapnuto
+        ⏳ Načítám docházkový systém...
 
       </div>
 
@@ -449,7 +434,7 @@
 
 
 // =====================================================
-// SEM VLOŽ ADRESU SVÉHO APPS SCRIPT PANELU
+// SEM VLOŽ SVOU PANEL URL
 // =====================================================
 
 const PANEL_URL =
@@ -479,6 +464,15 @@ let testMode =
 let cameraTestSuccessful =
   false;
 
+
+// Panel ještě není načten.
+
+let panelReady =
+  false;
+
+
+// Ostré skenování je zamčené,
+// dokud Panel neřekne, že je připraven.
 
 let officialBusy =
   false;
@@ -603,7 +597,7 @@ async function loadCameras() {
 
 
 // =====================================================
-// SPUSTIT TEST KAMERY
+// TEST KAMERY
 // =====================================================
 
 async function startCameraTest() {
@@ -634,6 +628,10 @@ async function startCameraTest() {
 
 
   cameraTestSuccessful =
+    false;
+
+
+  panelReady =
     false;
 
 
@@ -785,7 +783,7 @@ function onQrRead(decodedText) {
 
 
   // =================================================
-  // OCHRANA PROTI NĚKOLIKA STEJNÝM SNÍMKŮM
+  // OCHRANA PROTI OPAKOVANÉMU SNÍMKU
   // =================================================
 
   if (
@@ -807,7 +805,7 @@ function onQrRead(decodedText) {
 
 
   // =================================================
-  // TESTOVACÍ REŽIM
+  // TEST KAMERY
   // =================================================
 
   if (
@@ -878,11 +876,15 @@ function onQrRead(decodedText) {
 
 
   // =================================================
-  // OSTRÝ REŽIM
+  // OSTRÉ SKENOVÁNÍ
+  //
+  // Dokud Panel není načtený,
+  // nic neposíláme.
   // =================================================
 
   if (
-    officialBusy
+    officialBusy ||
+    !panelReady
   ) {
 
     return;
@@ -951,7 +953,7 @@ function confirmCamera() {
   ) {
 
     alert(
-      'Nejdřív vlož do index.html adresu svého Apps Script Panelu.'
+      'Nejdřív vlož do index.html adresu svého Apps Script panelu.'
     );
 
     return;
@@ -963,8 +965,15 @@ function confirmCamera() {
     false;
 
 
-  officialBusy =
+  // DŮLEŽITÉ:
+  // zatím nepovolíme ostré skenování.
+
+  panelReady =
     false;
+
+
+  officialBusy =
+    true;
 
 
   lastCode =
@@ -995,6 +1004,14 @@ function confirmCamera() {
       'block';
 
 
+  document
+    .getElementById(
+      'officialLabel'
+    )
+    .textContent =
+      '⏳ Načítám docházkový systém...';
+
+
   const result =
     document
       .getElementById(
@@ -1003,12 +1020,16 @@ function confirmCamera() {
 
 
   result.className =
-    'success';
+    'warning';
 
 
   result.textContent =
-    '🟢 Kamera připravena na první ostrou kartičku';
+    '⏳ Čekám, až bude docházka připravena...';
 
+
+  // =================================================
+  // TEPRVE TEĎ NAČTEME PANEL
+  // =================================================
 
   const frame =
     document
@@ -1052,6 +1073,7 @@ function sendCodeToPanel(code) {
     officialBusy =
       false;
 
+
     return;
 
   }
@@ -1077,7 +1099,7 @@ function sendCodeToPanel(code) {
 
 
 // =====================================================
-// PANEL OZNÁMÍ, ŽE JE HOTOVÝ
+// ZPRÁVY Z PANELU
 // =====================================================
 
 window.addEventListener(
@@ -1086,38 +1108,97 @@ window.addEventListener(
 
   function(event) {
 
-    if (
-      !event.data ||
-      event.data.type !==
-        'attendance-finished'
-    ) {
+    if (!event.data) {
 
       return;
 
     }
 
 
-    officialBusy =
-      false;
+    // =================================================
+    // PANEL JE OPRAVDU NAČTENÝ
+    // =================================================
+
+    if (
+      event.data.type ===
+      'attendance-panel-ready'
+    ) {
+
+      panelReady =
+        true;
 
 
-    lastCode =
-      '';
+      officialBusy =
+        false;
 
 
-    const result =
+      lastCode =
+        '';
+
+
       document
         .getElementById(
-          'cameraResult'
-        );
+          'officialLabel'
+        )
+        .textContent =
+          '🟢 Ostré skenování zapnuto';
 
 
-    result.className =
-      'success';
+      const result =
+        document
+          .getElementById(
+            'cameraResult'
+          );
 
 
-    result.textContent =
-      '🟢 Připraveno na další kartičku';
+      result.className =
+        'success';
+
+
+      result.textContent =
+        '🟢 Vše připraveno – naskenuj první kartičku';
+
+
+      return;
+
+    }
+
+
+    // =================================================
+    // JEDEN ZÁPIS DOKONČEN
+    // =================================================
+
+    if (
+      event.data.type ===
+      'attendance-finished'
+    ) {
+
+      officialBusy =
+        false;
+
+
+      lastCode =
+        '';
+
+
+      const result =
+        document
+          .getElementById(
+            'cameraResult'
+          );
+
+
+      result.className =
+        'success';
+
+
+      result.textContent =
+        '🟢 Připraveno na další kartičku';
+
+
+      return;
+
+    }
 
   }
 
@@ -1138,6 +1219,10 @@ async function changeCamera() {
     false;
 
 
+  panelReady =
+    false;
+
+
   cameraTestSuccessful =
     false;
 
@@ -1155,6 +1240,14 @@ async function changeCamera() {
     )
     .style.display =
       'none';
+
+
+  document
+    .getElementById(
+      'panelFrame'
+    )
+    .src =
+      '';
 
 
   document
