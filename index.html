@@ -9,12 +9,7 @@
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <title>Taneční docházka</title>
-
-
-  <!-- STEJNĚ JAKO VE VERZI, KDE TI QR FUNGOVALO -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
-
+  <title>Test QR kamery</title>
 
   <style>
 
@@ -22,476 +17,213 @@
       box-sizing: border-box;
     }
 
-
     body {
       margin: 0;
+      padding: 12px;
       font-family: Arial, sans-serif;
       background: #f3f3f3;
       color: #222;
     }
 
-
     .container {
-      max-width: 680px;
+      max-width: 500px;
       margin: auto;
-      padding: 8px;
     }
-
 
     h1 {
       text-align: center;
-      margin: 6px 0 12px;
       font-size: 24px;
     }
 
-
-    .camera-box {
-      background: white;
-      border-radius: 16px;
-      padding: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-
-    .camera-title {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 7px;
-    }
-
-
-    .camera-info {
-      text-align: center;
-      color: #666;
-      line-height: 1.4;
-      margin-bottom: 12px;
-    }
-
-
-    select {
-      width: 100%;
-      padding: 13px;
-      border-radius: 9px;
-      border: 1px solid #ccc;
-      background: white;
-      font-size: 16px;
-    }
-
-
+    select,
     button {
       width: 100%;
-      border: none;
-      border-radius: 12px;
       padding: 14px;
       margin-top: 10px;
+      border-radius: 10px;
       font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
     }
 
-
-    .primary {
-      background: #222;
-      color: white;
-    }
-
-
-    .secondary {
+    select {
       background: white;
-      color: #222;
       border: 1px solid #ccc;
     }
 
-
-    .confirm {
-      display: none;
-      background: #176b2c;
+    button {
+      border: none;
+      background: #222;
       color: white;
+      font-weight: bold;
     }
 
-
-    /* =================================================
-       KAMERA
-       
-       DŮLEŽITÉ:
-       Teď ji NENUTÍME do pevné výšky ani object-fit:cover.
-       Jen omezíme šířku.
-       ================================================= */
-
-    .reader-wrap {
+    .video-box {
       width: 100%;
-      max-width: 330px;
-      margin: 12px auto 0;
-    }
-
-
-    #reader {
-      width: 100%;
-      border-radius: 15px;
+      max-width: 340px;
+      margin: 15px auto;
+      position: relative;
       overflow: hidden;
+      border-radius: 16px;
       background: #111;
     }
 
+    #qr-video {
+      width: 100%;
+      display: block;
+    }
 
-    /* ŽÁDNÉ vlastní CSS pro #reader video */
-
-
-    #cameraMessage {
-      padding: 13px;
-      margin-top: 10px;
-      border-radius: 10px;
+    #result {
+      margin-top: 12px;
+      padding: 18px;
+      border-radius: 12px;
+      background: white;
       text-align: center;
-      background: #f5f5f5;
-      line-height: 1.4;
+      font-size: 18px;
     }
 
-
-    .message-success {
-      background: #e1f4e1 !important;
-      border: 2px solid #69aa69;
+    .success {
+      background: #dff3df !important;
+      border: 2px solid #70b970;
     }
 
-
-    .message-warning {
-      background: #fff3cd !important;
-      border: 2px solid #e0b400;
-    }
-
-
-    .message-error {
+    .error {
       background: #ffe5e5 !important;
       border: 2px solid #d66;
     }
 
-
-    #scanStatus {
-      display: none;
-      padding: 13px;
-      margin-top: 10px;
-      border-radius: 10px;
-      text-align: center;
-      background: #fff3cd;
-      border: 2px solid #e0b400;
+    .code {
+      font-size: 34px;
       font-weight: bold;
-    }
-
-
-    #scanResultFrame {
-      width: 100%;
-      min-height: 130px;
-      border: none;
       margin-top: 8px;
-      display: block;
-      background: transparent;
-    }
-
-
-    #panelContainer {
-      display: none;
-      margin-top: 8px;
-    }
-
-
-    #panelFrame {
-      width: 100%;
-      min-height: 1050px;
-      border: none;
-      display: block;
-      background: #f3f3f3;
-    }
-
-
-    #bottomCameraControls {
-      display: none;
-      margin-top: 18px;
-      padding-bottom: 35px;
-    }
-
-
-    .bottom-note {
-      text-align: center;
-      color: #777;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-
-    #scanForm {
-      display: none;
-    }
-
-
-    @media (max-width: 450px) {
-
-      .container {
-        padding: 7px;
-      }
-
-      h1 {
-        font-size: 23px;
-      }
-
-      .reader-wrap {
-        max-width: 310px;
-      }
-
     }
 
   </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
   <h1>
-    💃 Taneční docházka
+    📷 Test QR kamery
   </h1>
 
+  <select id="cameraSelect">
 
-  <div class="camera-box">
+    <option value="">
+      Načítám kamery...
+    </option>
 
+  </select>
 
-    <div class="camera-title">
-      📷 QR skener
-    </div>
+  <button onclick="startSelectedCamera()">
+    Spustit vybranou kameru
+  </button>
 
+  <div class="video-box">
 
-    <!-- ======================================= -->
-    <!-- TEST KAMERY -->
-    <!-- ======================================= -->
-
-    <div id="setupControls">
-
-
-      <div class="camera-info">
-
-        Vyber kameru, která dobře ostří
-        na QR kód.
-
-        <br><br>
-
-        Nejdřív naskenuj jednu kartičku nanečisto.
-        Test se do docházky nezapisuje.
-
-      </div>
-
-
-      <select id="cameraSelect">
-
-        <option value="">
-          Načítám kamery...
-        </option>
-
-      </select>
-
-
-      <button
-        class="primary"
-        onclick="startCameraTest()">
-
-        📷 Otestovat vybranou kameru
-
-      </button>
-
-    </div>
-
-
-    <!-- ======================================= -->
-    <!-- KAMERA -->
-    <!-- ======================================= -->
-
-    <div class="reader-wrap">
-
-      <div id="reader"></div>
-
-    </div>
-
-
-    <!-- ======================================= -->
-    <!-- INFO KAMERY -->
-    <!-- ======================================= -->
-
-    <div id="cameraMessage">
-
-      Čekám na výběr kamery.
-
-    </div>
-
-
-    <button
-      id="confirmCameraButton"
-      class="confirm"
-      onclick="confirmCamera()">
-
-      ✅ Tato kamera funguje – spustit docházku
-
-    </button>
-
-
-    <!-- ======================================= -->
-    <!-- ZPRACOVÁNÍ -->
-    <!-- ======================================= -->
-
-    <div id="scanStatus">
-      ⏳ Zpracovávám...
-    </div>
-
-
-    <!-- ======================================= -->
-    <!-- VÝSLEDEK DOCHÁZKY -->
-    <!-- ======================================= -->
-
-    <iframe
-      id="scanResultFrame"
-      name="scanResultFrame"
-      srcdoc="
-        <html>
-          <body style='font-family:Arial;text-align:center;color:#777;padding:22px 5px;margin:0;'>
-            Po spuštění docházky se zde zobrazí výsledek.
-          </body>
-        </html>
-      ">
-    </iframe>
-
+    <video
+      id="qr-video"
+      playsinline>
+    </video>
 
   </div>
 
-
-  <!-- ========================================= -->
-  <!-- PANEL -->
-  <!-- ========================================= -->
-
-  <div id="panelContainer">
-
-    <iframe
-      id="panelFrame"
-      src="">
-    </iframe>
-
+  <div id="result">
+    Čekám na kameru.
   </div>
-
-
-  <!-- ========================================= -->
-  <!-- ZMĚNA KAMERY AŽ DOLE -->
-  <!-- ========================================= -->
-
-  <div id="bottomCameraControls">
-
-
-    <div class="bottom-note">
-
-      Použij pouze pokud bude potřeba
-      vybrat jinou kameru.
-
-    </div>
-
-
-    <button
-      class="secondary"
-      onclick="changeCamera()">
-
-      🔄 Změnit / znovu otestovat kameru
-
-    </button>
-
-  </div>
-
-
-  <!-- ========================================= -->
-  <!-- SKRYTÝ FORMULÁŘ PRO QR -->
-  <!-- ========================================= -->
-
-  <form
-    id="scanForm"
-    method="POST"
-    target="scanResultFrame">
-
-    <input
-      type="hidden"
-      name="action"
-      value="scanPage">
-
-    <input
-      type="hidden"
-      id="scanCode"
-      name="code">
-
-  </form>
-
 
 </div>
 
 
-<script>
+<script type="module">
+
+import QrScanner
+  from 'https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js';
 
 
-// =====================================================
-// SEM VLOŽ SVOU APPS SCRIPT URL
-//
-// BEZ ?page=panel
-// =====================================================
-
-const WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbz4AAoQh6esrTyXvW2YWtp_peuvgYWoGmAlYinO5Q-waWqyHiWqvQh_dpCyMmlHQ_uE/exec';
+const video =
+  document.getElementById(
+    'qr-video'
+  );
 
 
-// =====================================================
-// PANEL
-// =====================================================
-
-const PANEL_URL =
-  WEBAPP_URL +
-  '?page=panel';
+const select =
+  document.getElementById(
+    'cameraSelect'
+  );
 
 
-// =====================================================
-// PROMĚNNÉ
-// =====================================================
+const result =
+  document.getElementById(
+    'result'
+  );
+
 
 let scanner =
   null;
 
 
-let scanning =
-  false;
+// =====================================================
+// VYTVOŘENÍ SKENERU
+// =====================================================
+
+scanner =
+  new QrScanner(
+
+    video,
+
+    function(scanResult) {
+
+      const code =
+        String(
+          scanResult.data || ''
+        )
+          .trim()
+          .toUpperCase();
 
 
-let selectedCameraId =
-  '';
+      if (!code) {
+        return;
+      }
 
 
-let testMode =
-  true;
+      result.className =
+        'success';
 
 
-let cameraTestSuccessful =
-  false;
+      result.innerHTML =
 
+        '✅ QR přečten' +
 
-let attendanceMode =
-  false;
+        '<div class="code">' +
 
+        code +
 
-let scannerBusy =
-  false;
+        '</div>';
 
+    },
 
-let pendingScan =
-  false;
+    {
 
+      returnDetailedScanResult:
+        true,
 
-let lastCode =
-  '';
+      highlightScanRegion:
+        true,
 
+      highlightCodeOutline:
+        true,
 
-let lastScanTime =
-  0;
+      maxScansPerSecond:
+        15,
+
+      preferredCamera:
+        'environment'
+
+    }
+
+  );
 
 
 // =====================================================
@@ -500,47 +232,22 @@ let lastScanTime =
 
 async function loadCameras() {
 
-  const select =
-    document
-      .getElementById(
-        'cameraSelect'
-      );
-
-
-  const message =
-    document
-      .getElementById(
-        'cameraMessage'
-      );
-
-
   try {
 
+    // Nejprve krátce spustíme kameru,
+    // aby prohlížeč povolil přístup.
+
+    await scanner.start();
+
+
     const cameras =
-      await Html5Qrcode
-        .getCameras();
+      await QrScanner.listCameras(
+        true
+      );
 
 
     select.innerHTML =
       '';
-
-
-    if (
-      !cameras ||
-      cameras.length === 0
-    ) {
-
-      message.className =
-        'message-error';
-
-
-      message.textContent =
-        '❌ Nebyla nalezena žádná kamera.';
-
-
-      return;
-
-    }
 
 
     cameras.forEach(
@@ -548,10 +255,9 @@ async function loadCameras() {
       function(camera, index) {
 
         const option =
-          document
-            .createElement(
-              'option'
-            );
+          document.createElement(
+            'option'
+          );
 
 
         option.value =
@@ -559,10 +265,12 @@ async function loadCameras() {
 
 
         option.textContent =
-          camera.label ||
+
+          (index + 1) +
+          '. ' +
           (
-            'Kamera ' +
-            (index + 1)
+            camera.label ||
+            'Kamera'
           );
 
 
@@ -575,22 +283,25 @@ async function loadCameras() {
     );
 
 
-    message.className =
+    scanner.stop();
+
+
+    result.className =
       '';
 
 
-    message.textContent =
+    result.textContent =
       'Vyber kameru a spusť test.';
 
 
   } catch (error) {
 
-    message.className =
-      'message-error';
+    result.className =
+      'error';
 
 
-    message.textContent =
-      '❌ Kamery se nepodařilo načíst: ' +
+    result.textContent =
+      '❌ ' +
       error;
 
   }
@@ -599,754 +310,57 @@ async function loadCameras() {
 
 
 // =====================================================
-// TEST KAMERY
-//
-// TOTO JE NÁVRAT KE ZPŮSOBU,
-// KTERÝ TI DŘÍVE FUNGOVAL.
+// SPUSTIT VYBRANOU KAMERU
 // =====================================================
 
-async function startCameraTest() {
+window.startSelectedCamera =
+  async function() {
 
-  const select =
-    document
-      .getElementById(
-        'cameraSelect'
-      );
+    const cameraId =
+      select.value;
 
 
-  const message =
-    document
-      .getElementById(
-        'cameraMessage'
-      );
+    if (!cameraId) {
 
-
-  selectedCameraId =
-    select.value;
-
-
-  if (!selectedCameraId) {
-
-    message.className =
-      'message-error';
-
-
-    message.textContent =
-      '❌ Nejdřív vyber kameru.';
-
-
-    return;
-
-  }
-
-
-  await stopScanner();
-
-
-  testMode =
-    true;
-
-
-  attendanceMode =
-    false;
-
-
-  cameraTestSuccessful =
-    false;
-
-
-  scannerBusy =
-    false;
-
-
-  pendingScan =
-    false;
-
-
-  lastCode =
-    '';
-
-
-  lastScanTime =
-    0;
-
-
-  document
-    .getElementById(
-      'confirmCameraButton'
-    )
-    .style.display =
-      'none';
-
-
-  message.className =
-    '';
-
-
-  message.textContent =
-    'Spouštím kameru...';
-
-
-  scanner =
-    new Html5Qrcode(
-      'reader'
-    );
-
-
-  try {
-
-    // =================================================
-    // PŘESNĚ PRINCIP Z TVÉ FUNKČNÍ VERZE:
-    //
-    // selectedCameraId jako STRING
-    // fps 15
-    // dynamický qrbox
-    // ŽÁDNÉ videoConstraints
-    // ŽÁDNÉ autofocus zásahy
-    // =================================================
-
-    await scanner.start(
-
-      selectedCameraId,
-
-      {
-
-        fps:
-          15,
-
-
-        qrbox:
-          function(
-            width,
-            height
-          ) {
-
-            const size =
-              Math.floor(
-
-                Math.min(
-                  width,
-                  height
-                ) * 0.88
-
-              );
-
-
-            return {
-
-              width:
-                size,
-
-              height:
-                size
-
-            };
-
-          }
-
-      },
-
-      onQrRead,
-
-      function() {
-
-        // Nepřečtené snímky ignorujeme.
-
-      }
-
-    );
-
-
-    scanning =
-      true;
-
-
-    message.className =
-      '';
-
-
-    message.textContent =
-      '📷 Kamera běží. Naskenuj testovací kartičku.';
-
-
-  } catch (error) {
-
-    scanning =
-      false;
-
-
-    message.className =
-      'message-error';
-
-
-    message.textContent =
-      '❌ Kameru se nepodařilo spustit: ' +
-      error;
-
-  }
-
-}
-
-
-// =====================================================
-// QR PŘEČTEN
-// =====================================================
-
-function onQrRead(decodedText) {
-
-  const code =
-    String(
-      decodedText || ''
-    )
-      .trim()
-      .toUpperCase();
-
-
-  if (!code) {
-
-    return;
-
-  }
-
-
-  const now =
-    Date.now();
-
-
-  if (
-    code === lastCode &&
-    now - lastScanTime <
-      2500
-  ) {
-
-    return;
-
-  }
-
-
-  lastCode =
-    code;
-
-
-  lastScanTime =
-    now;
-
-
-  // =================================================
-  // TEST
-  // =================================================
-
-  if (
-    testMode
-  ) {
-
-    const message =
-      document
-        .getElementById(
-          'cameraMessage'
-        );
-
-
-    if (
-      /^[MF]\d+$/.test(
-        code
-      )
-    ) {
-
-      cameraTestSuccessful =
-        true;
-
-
-      message.className =
-        'message-success';
-
-
-      message.innerHTML =
-
-        '✅ Kamera QR přečetla správně.' +
-
-        '<br><br>' +
-
-        '<strong style="font-size:32px;">' +
-
-        code +
-
-        '</strong>';
-
-
-      document
-        .getElementById(
-          'confirmCameraButton'
-        )
-        .style.display =
-          'block';
-
-    }
-
-    else {
-
-      message.className =
-        'message-warning';
-
-
-      message.innerHTML =
-
-        '⚠️ QR byl přečten, ale není ve formátu M/F.' +
-
-        '<br><br>' +
-
-        '<strong>' +
-
-        code +
-
-        '</strong>';
+      return;
 
     }
 
 
-    return;
+    try {
 
-  }
-
-
-  // =================================================
-  // OSTRÁ DOCHÁZKA
-  // =================================================
-
-  if (
-    !attendanceMode ||
-    scannerBusy
-  ) {
-
-    return;
-
-  }
+      scanner.stop();
 
 
-  if (
-    !/^[MF]\d+$/.test(
-      code
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  submitQr(
-    code
-  );
-
-}
-
-
-// =====================================================
-// POTVRDIT KAMERU
-// =====================================================
-
-function confirmCamera() {
-
-  if (
-    !cameraTestSuccessful
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    WEBAPP_URL.includes(
-      'SEM_VLOZ'
-    )
-  ) {
-
-    alert(
-      'Nejdřív vlož svoji WEBAPP_URL do index.html.'
-    );
-
-    return;
-
-  }
-
-
-  // =================================================
-  // KAMERA SE NEVYPÍNÁ ANI NERESTARTUJE.
-  // =================================================
-
-  testMode =
-    false;
-
-
-  attendanceMode =
-    true;
-
-
-  scannerBusy =
-    false;
-
-
-  pendingScan =
-    false;
-
-
-  lastCode =
-    '';
-
-
-  lastScanTime =
-    0;
-
-
-  document
-    .getElementById(
-      'setupControls'
-    )
-    .style.display =
-      'none';
-
-
-  document
-    .getElementById(
-      'confirmCameraButton'
-    )
-    .style.display =
-      'none';
-
-
-  document
-    .getElementById(
-      'panelContainer'
-    )
-    .style.display =
-      'block';
-
-
-  document
-    .getElementById(
-      'bottomCameraControls'
-    )
-    .style.display =
-      'block';
-
-
-  const message =
-    document
-      .getElementById(
-        'cameraMessage'
+      await scanner.setCamera(
+        cameraId
       );
 
 
-  message.className =
-    'message-success';
+      await scanner.start();
 
 
-  message.textContent =
-    '🟢 Ostré skenování zapnuto';
-
-
-  const frame =
-    document
-      .getElementById(
-        'scanResultFrame'
-      );
-
-
-  frame.srcdoc =
-
-    '<html>' +
-
-    '<body style="' +
-
-    'font-family:Arial;' +
-
-    'text-align:center;' +
-
-    'margin:0;' +
-
-    'padding:25px 5px;' +
-
-    'font-weight:bold;' +
-
-    'font-size:19px;' +
-
-    'color:#176b2c;' +
-
-    '">' +
-
-    'Naskenuj první kartičku' +
-
-    '</body>' +
-
-    '</html>';
-
-
-  refreshPanel();
-
-}
-
-
-// =====================================================
-// ODESLAT QR DO APPS SCRIPTU
-// =====================================================
-
-function submitQr(code) {
-
-  scannerBusy =
-    true;
-
-
-  pendingScan =
-    true;
-
-
-  const status =
-    document
-      .getElementById(
-        'scanStatus'
-      );
-
-
-  status.style.display =
-    'block';
-
-
-  status.textContent =
-    '⏳ Zpracovávám ' +
-    code +
-    '...';
-
-
-  document
-    .getElementById(
-      'scanCode'
-    )
-    .value =
-      code;
-
-
-  const form =
-    document
-      .getElementById(
-        'scanForm'
-      );
-
-
-  form.action =
-    WEBAPP_URL;
-
-
-  form.submit();
-
-}
-
-
-// =====================================================
-// ODPOVĚĎ APPS SCRIPTU SE NAČETLA
-// =====================================================
-
-document
-  .getElementById(
-    'scanResultFrame'
-  )
-  .addEventListener(
-
-    'load',
-
-    function() {
-
-      if (
-        !pendingScan
-      ) {
-
-        return;
-
-      }
-
-
-      pendingScan =
-        false;
-
-
-      scannerBusy =
-        false;
-
-
-      lastCode =
+      result.className =
         '';
 
 
-      lastScanTime =
-        Date.now();
+      result.textContent =
+        '📷 Kamera běží. Zkus QR kód.';
 
 
-      document
-        .getElementById(
-          'scanStatus'
-        )
-        .style.display =
-          'none';
+    } catch (error) {
+
+      result.className =
+        'error';
 
 
-      refreshPanel();
+      result.textContent =
+        '❌ ' +
+        error;
 
     }
 
-  );
-
-
-// =====================================================
-// OBNOVIT PANEL
-// =====================================================
-
-function refreshPanel() {
-
-  const frame =
-    document
-      .getElementById(
-        'panelFrame'
-      );
-
-
-  frame.src =
-
-    PANEL_URL +
-
-    '&refresh=' +
-
-    Date.now();
-
-}
-
-
-// =====================================================
-// ZMĚNA KAMERY
-// =====================================================
-
-async function changeCamera() {
-
-  attendanceMode =
-    false;
-
-
-  testMode =
-    true;
-
-
-  cameraTestSuccessful =
-    false;
-
-
-  scannerBusy =
-    false;
-
-
-  pendingScan =
-    false;
-
-
-  lastCode =
-    '';
-
-
-  lastScanTime =
-    0;
-
-
-  await stopScanner();
-
-
-  document
-    .getElementById(
-      'setupControls'
-    )
-    .style.display =
-      'block';
-
-
-  document
-    .getElementById(
-      'confirmCameraButton'
-    )
-    .style.display =
-      'none';
-
-
-  const message =
-    document
-      .getElementById(
-        'cameraMessage'
-      );
-
-
-  message.className =
-    '';
-
-
-  message.textContent =
-    'Vyber kameru a spusť nový test.';
-
-
-  window.scrollTo({
-
-    top:
-      0,
-
-    behavior:
-      'smooth'
-
-  });
-
-}
-
-
-// =====================================================
-// ZASTAVIT KAMERU
-// =====================================================
-
-async function stopScanner() {
-
-  if (
-    !scanner ||
-    !scanning
-  ) {
-
-    return;
-
-  }
-
-
-  try {
-
-    await scanner.stop();
-
-  } catch (error) {
-
-    // Ignorujeme.
-
-  }
-
-
-  try {
-
-    scanner.clear();
-
-  } catch (error) {
-
-    // Ignorujeme.
-
-  }
-
-
-  scanning =
-    false;
-
-
-  scanner =
-    null;
-
-}
+  };
 
 
 // =====================================================
@@ -1356,7 +370,6 @@ async function stopScanner() {
 loadCameras();
 
 </script>
-
 
 </body>
 
