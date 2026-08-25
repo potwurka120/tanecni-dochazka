@@ -25,364 +25,197 @@
 
 
     body {
-
       margin: 0;
-
       font-family: Arial, sans-serif;
-
       background: #f3f3f3;
-
       color: #222;
-
     }
 
 
     .container {
-
       width: 100%;
-
       max-width: 680px;
-
       margin: auto;
-
       padding: 8px;
-
     }
 
 
     h1 {
-
       text-align: center;
-
       margin: 6px 0 12px;
-
       font-size: 24px;
-
     }
 
 
     .camera-box {
-
       background: white;
-
       border-radius: 16px;
-
       padding: 12px;
-
-      box-shadow:
-        0 2px 8px
-        rgba(0,0,0,0.08);
-
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
 
     .camera-title {
-
       text-align: center;
-
-      font-size: 18px;
-
+      font-size: 19px;
       font-weight: bold;
-
       margin-bottom: 8px;
-
     }
 
 
     .camera-info {
-
       text-align: center;
-
       color: #666;
-
       line-height: 1.4;
-
       margin-bottom: 12px;
-
     }
 
 
     select {
-
       width: 100%;
-
       padding: 12px;
-
       border-radius: 9px;
-
       border: 1px solid #ccc;
-
       background: white;
-
       font-size: 16px;
-
     }
 
 
     button {
-
       width: 100%;
-
       border: none;
-
       border-radius: 12px;
-
       padding: 14px;
-
       margin-top: 10px;
-
       font-size: 16px;
-
       font-weight: bold;
-
       cursor: pointer;
-
     }
 
 
     .primary {
-
       background: #222;
-
       color: white;
-
     }
 
 
     .secondary {
-
       background: white;
-
       color: #222;
-
       border: 1px solid #ccc;
-
     }
 
 
     .confirm {
-
       display: none;
-
       background: #176b2c;
-
       color: white;
-
     }
 
 
-    /* =========================================
-       KAMERA – MALÝ ČTVEREC
-       ========================================= */
+    /* =================================================
+       MALÁ ČTVERCOVÁ KAMERA
+       ================================================= */
 
     .reader-wrap {
-
-      width: min(
-        82vw,
-        310px
-      );
-
-      height: min(
-        82vw,
-        310px
-      );
-
+      width: min(82vw, 310px);
+      height: min(82vw, 310px);
       max-width: 310px;
-
       max-height: 310px;
-
-      margin:
-        12px auto 0;
-
+      margin: 12px auto 0;
       overflow: hidden;
-
       border-radius: 16px;
-
       background: #111;
-
     }
 
 
     #reader {
-
       width: 100%;
-
       height: 100%;
-
       background: #111;
-
     }
 
 
     #reader video {
-
       width: 100% !important;
-
       height: 100% !important;
-
       object-fit: cover !important;
-
     }
 
 
-    /* =========================================
-       VÝSLEDEK QR
-       ========================================= */
+    /* =================================================
+       ZPRACOVÁVÁM
+       ================================================= */
 
-    #scanResult {
-
-      margin-top: 12px;
-
-      padding: 16px;
-
-      border-radius: 14px;
-
-      text-align: center;
-
-      background: #f5f5f5;
-
-      min-height: 62px;
-
-    }
-
-
-    .result-name {
-
-      font-size: 25px;
-
-      font-weight: bold;
-
-      margin-bottom: 5px;
-
-    }
-
-
-    .result-detail {
-
-      font-size: 16px;
-
-      line-height: 1.35;
-
-    }
-
-
-    .scan-success {
-
-      background: #dff3df !important;
-
-      border: 2px solid #70b970;
-
-    }
-
-
-    .scan-warning {
-
-      background: #fff3cd !important;
-
-      border: 2px solid #e0b400;
-
-    }
-
-
-    .scan-error {
-
-      background: #ffe5e5 !important;
-
-      border: 2px solid #d66;
-
-    }
-
-
-    #undoQrButton {
-
+    #scanStatus {
       display: none;
-
-      background: white;
-
-      color: #b22;
-
-      border: 1px solid #c55;
-
+      margin-top: 10px;
+      padding: 12px;
+      background: #fff3cd;
+      border: 2px solid #e0b400;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
     }
 
 
-    /* =========================================
+    /* =================================================
+       VÝSLEDEK POD KAMEROU
+       ================================================= */
+
+    #scanResultFrame {
+      width: 100%;
+      min-height: 125px;
+      border: 0;
+      margin-top: 8px;
+      display: block;
+      background: transparent;
+    }
+
+
+    /* =================================================
        PANEL
-       ========================================= */
+       ================================================= */
 
     #panelContainer {
-
       display: none;
-
       margin-top: 8px;
-
     }
 
 
     #panelFrame {
-
       width: 100%;
-
-      min-height: 1150px;
-
+      min-height: 1050px;
       border: none;
-
       display: block;
-
       background: #f3f3f3;
-
     }
 
 
-    /* =========================================
-       KAMERA DOLŮ
-       ========================================= */
+    /* =================================================
+       ZMĚNA KAMERY ÚPLNĚ DOLE
+       ================================================= */
 
     #bottomCameraControls {
-
       display: none;
-
       margin-top: 14px;
-
       padding-bottom: 30px;
-
     }
 
 
     .bottom-note {
-
       text-align: center;
-
       color: #777;
-
       font-size: 13px;
-
-      margin-bottom: 4px;
-
     }
 
 
-    /* =========================================
-       SKRYTÝ BRIDGE
-       ========================================= */
+    /* =================================================
+       SKRYTÝ FORM
+       ================================================= */
 
-    #bridgeFrame {
-
+    #scanForm {
       display: none;
-
-      width: 0;
-
-      height: 0;
-
-      border: 0;
-
-    }
-
-
-    #bridgeForm {
-
-      display: none;
-
     }
 
   </style>
@@ -397,7 +230,7 @@
 
 
   <h1>
-    💃 Taneční docházka TEST 25
+    💃 Taneční docházka
   </h1>
 
 
@@ -410,7 +243,7 @@
 
 
     <!-- ======================================= -->
-    <!-- PRVNÍ TEST -->
+    <!-- TEST KAMERY -->
     <!-- ======================================= -->
 
     <div id="setupControls">
@@ -423,8 +256,8 @@
 
         <br><br>
 
-        Naskenuj jednu kartičku nanečisto.
-        Test se do docházky nezapíše.
+        Nejdřív naskenuj jednu kartičku nanečisto.
+        Test se do docházky nezapisuje.
 
       </div>
 
@@ -450,7 +283,7 @@
 
 
     <!-- ======================================= -->
-    <!-- MALÁ ČTVERCOVÁ KAMERA -->
+    <!-- KAMERA -->
     <!-- ======================================= -->
 
     <div class="reader-wrap">
@@ -462,26 +295,31 @@
 
 
     <!-- ======================================= -->
+    <!-- STAV -->
+    <!-- ======================================= -->
+
+    <div id="scanStatus">
+
+      ⏳ Zpracovávám...
+
+    </div>
+
+
+    <!-- ======================================= -->
     <!-- VÝSLEDEK -->
     <!-- ======================================= -->
 
-    <div id="scanResult">
-
-      <div
-        id="scanResultName"
-        class="result-name">
-
-        Čekám na kameru...
-
-      </div>
-
-
-      <div
-        id="scanResultDetail"
-        class="result-detail">
-      </div>
-
-    </div>
+    <iframe
+      id="scanResultFrame"
+      name="scanResultFrame"
+      srcdoc="
+        <html>
+        <body style='font-family:Arial;text-align:center;color:#777;padding:25px 5px;margin:0;'>
+        Čekám na první kartičku.
+        </body>
+        </html>
+      ">
+    </iframe>
 
 
     <button
@@ -490,15 +328,6 @@
       onclick="confirmCamera()">
 
       ✅ Tato kamera funguje – spustit docházku
-
-    </button>
-
-
-    <button
-      id="undoQrButton"
-      onclick="undoQrAttendance()">
-
-      ✖ Zrušit tento QR zápis
 
     </button>
 
@@ -521,7 +350,7 @@
 
 
   <!-- ========================================= -->
-  <!-- ZMĚNA KAMERY – ÚPLNĚ DOLE -->
+  <!-- ZMĚNA KAMERY DOLE -->
   <!-- ========================================= -->
 
   <div id="bottomCameraControls">
@@ -529,8 +358,8 @@
 
     <div class="bottom-note">
 
-      Tuto volbu potřebuješ jen tehdy,
-      když kamera špatně ostří.
+      Tuto volbu potřebuješ jen pokud
+      kamera špatně ostří.
 
     </div>
 
@@ -547,39 +376,23 @@
 
 
   <!-- ========================================= -->
-  <!-- SKRYTÝ BRIDGE -->
+  <!-- SKRYTÝ POST FORM -->
   <!-- ========================================= -->
 
-  <iframe
-    id="bridgeFrame"
-    name="bridgeFrame">
-  </iframe>
-
-
   <form
-    id="bridgeForm"
+    id="scanForm"
     method="POST"
-    target="bridgeFrame">
+    target="scanResultFrame">
 
     <input
       type="hidden"
-      id="bridgeAction"
-      name="action">
+      name="action"
+      value="scanPage">
 
     <input
       type="hidden"
-      id="bridgeToken"
-      name="token">
-
-    <input
-      type="hidden"
-      id="bridgeCode"
+      id="scanCode"
       name="code">
-
-    <input
-      type="hidden"
-      id="bridgeRecordId"
-      name="recordId">
 
   </form>
 
@@ -591,17 +404,17 @@
 
 
 // =====================================================
-// SEM VLOŽ ADRESU WEB APP
+// SEM VLOŽ SVOU APPS SCRIPT WEB APP URL
 //
 // BEZ ?page=panel
 // =====================================================
 
 const WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbz4AAoQh6esrTyXvW2YWtp_peuvgYWoGmAlYinO5Q-waWqyHiWqvQh_dpCyMmlHQ_uE/exec?page=panel';
+  'https://script.google.com/macros/s/AKfycbz4AAoQh6esrTyXvW2YWtp_peuvgYWoGmAlYinO5Q-waWqyHiWqvQh_dpCyMmlHQ_uE/exec';
 
 
 // =====================================================
-// PANEL URL
+// PANEL
 // =====================================================
 
 const PANEL_URL =
@@ -641,11 +454,7 @@ let scannerBusy =
   false;
 
 
-let bridgeToken =
-  '';
-
-
-let pendingStartAttendance =
+let pendingScan =
   false;
 
 
@@ -655,10 +464,6 @@ let lastCode =
 
 let lastScanTime =
   0;
-
-
-let lastUndoRecord =
-  null;
 
 
 // =====================================================
@@ -690,14 +495,8 @@ async function loadCameras() {
       cameras.length === 0
     ) {
 
-      showScannerMessage(
-
-        '❌ Kamera nenalezena',
-
-        'Telefon neposkytl žádnou kameru.',
-
-        'error'
-
+      alert(
+        'Nebyla nalezena žádná kamera.'
       );
 
 
@@ -738,27 +537,11 @@ async function loadCameras() {
     );
 
 
-    showScannerMessage(
-
-      '📷 Vyber kameru',
-
-      'Potom spusť test QR kódu.',
-
-      ''
-
-    );
-
-
   } catch (error) {
 
-    showScannerMessage(
-
-      '❌ Chyba kamery',
-
-      String(error),
-
-      'error'
-
+    alert(
+      'Kamery se nepodařilo načíst: ' +
+      error
     );
 
   }
@@ -809,7 +592,8 @@ async function startCameraTest() {
     false;
 
 
-  clearUndoQr();
+  pendingScan =
+    false;
 
 
   lastCode =
@@ -826,17 +610,6 @@ async function startCameraTest() {
     )
     .style.display =
       'none';
-
-
-  showScannerMessage(
-
-    '⏳ Spouštím kameru...',
-
-    '',
-
-    ''
-
-  );
 
 
   scanner =
@@ -933,31 +706,15 @@ async function startCameraTest() {
       true;
 
 
-    showScannerMessage(
-
-      '📷 Test kamery',
-
-      'Naskenuj jednu kartičku nanečisto.',
-
-      ''
-
-    );
-
-
   } catch (error) {
 
     scanning =
       false;
 
 
-    showScannerMessage(
-
-      '❌ Kameru se nepodařilo spustit',
-
-      String(error),
-
-      'error'
-
+    alert(
+      'Kameru se nepodařilo spustit: ' +
+      error
     );
 
   }
@@ -990,9 +747,13 @@ function onQrRead(decodedText) {
     Date.now();
 
 
+  // =================================================
+  // STEJNÝ KÓD NĚKOLIK SEKUND IGNORUJEME
+  // =================================================
+
   if (
     code === lastCode &&
-    now - lastScanTime < 2500
+    now - lastScanTime < 5000
   ) {
 
     return;
@@ -1009,7 +770,7 @@ function onQrRead(decodedText) {
 
 
   // =================================================
-  // TEST
+  // TEST KAMERY
   // =================================================
 
   if (
@@ -1026,16 +787,43 @@ function onQrRead(decodedText) {
         true;
 
 
-      showScannerMessage(
+      const frame =
+        document
+          .getElementById(
+            'scanResultFrame'
+          );
 
-        '✅ Kamera funguje',
+
+      frame.srcdoc =
+
+        '<html>' +
+
+        '<body style="' +
+        'font-family:Arial;' +
+        'text-align:center;' +
+        'margin:0;' +
+        'padding:18px 5px;' +
+        'background:#dff3df;' +
+        'border:2px solid #70b970;' +
+        'border-radius:14px;' +
+        '">' +
+
+        '<div style="font-size:23px;font-weight:bold;">' +
+
+        '✅ Kamera funguje' +
+
+        '</div>' +
+
+        '<div style="margin-top:6px;">' +
 
         'Přečteno: ' +
-        code,
+        code +
 
-        'success'
+        '</div>' +
 
-      );
+        '</body>' +
+
+        '</html>';
 
 
       document
@@ -1044,19 +832,6 @@ function onQrRead(decodedText) {
         )
         .style.display =
           'block';
-
-    } else {
-
-      showScannerMessage(
-
-        '⚠️ QR přečten',
-
-        'Obsah QR: ' +
-        code,
-
-        'warning'
-
-      );
 
     }
 
@@ -1085,42 +860,6 @@ function onQrRead(decodedText) {
       code
     )
   ) {
-
-    showScannerMessage(
-
-      '❌ Neplatný QR kód',
-
-      code,
-
-      'error'
-
-    );
-
-
-    return;
-
-  }
-
-
-  if (!bridgeToken) {
-
-    scannerBusy =
-      true;
-
-
-    showScannerMessage(
-
-      '⏳ Obnovuji spojení...',
-
-      'Počkej okamžik.',
-
-      'warning'
-
-    );
-
-
-    requestBridgeSession();
-
 
     return;
 
@@ -1164,23 +903,25 @@ function confirmCamera() {
   }
 
 
+  // =================================================
+  // KAMERU NEVYPÍNÁME.
+  // STEJNÁ FUNKČNÍ KAMERA POKRAČUJE DÁL.
+  // =================================================
+
   testMode =
     false;
 
 
   attendanceMode =
-    false;
+    true;
 
 
   scannerBusy =
-    true;
+    false;
 
 
-  pendingStartAttendance =
-    true;
-
-
-  clearUndoQr();
+  pendingScan =
+    false;
 
 
   lastCode =
@@ -1226,50 +967,38 @@ function confirmCamera() {
   refreshPanel();
 
 
-  showScannerMessage(
-
-    '⏳ Připravuji docházku...',
-
-    'Kamera už je připravená.',
-
-    'warning'
-
-  );
-
-
-  requestBridgeSession();
-
-}
-
-
-// =====================================================
-// BRIDGE RELACE
-// =====================================================
-
-function requestBridgeSession() {
-
   const frame =
     document
       .getElementById(
-        'bridgeFrame'
+        'scanResultFrame'
       );
 
 
-  frame.src =
+  frame.srcdoc =
 
-    WEBAPP_URL +
+    '<html>' +
 
-    '?page=bridgeSession' +
+    '<body style="' +
+    'font-family:Arial;' +
+    'text-align:center;' +
+    'margin:0;' +
+    'padding:25px 5px;' +
+    'color:#176b2c;' +
+    'font-weight:bold;' +
+    'font-size:19px;' +
+    '">' +
 
-    '&t=' +
+    '🟢 Připraveno – naskenuj první kartičku' +
 
-    Date.now();
+    '</body>' +
+
+    '</html>';
 
 }
 
 
 // =====================================================
-// ODESLAT QR
+// ODESLÁNÍ QR
 // =====================================================
 
 function submitQr(code) {
@@ -1278,57 +1007,40 @@ function submitQr(code) {
     true;
 
 
-  clearUndoQr();
-
-
-  showScannerMessage(
-
-    '⏳ Zpracovávám ' +
-    code,
-
-    'Kontroluji kartičku a docházku...',
-
-    'warning'
-
-  );
+  pendingScan =
+    true;
 
 
   document
     .getElementById(
-      'bridgeAction'
+      'scanStatus'
     )
-    .value =
-      'bridgeScan';
+    .style.display =
+      'block';
 
 
   document
     .getElementById(
-      'bridgeToken'
+      'scanStatus'
     )
-    .value =
-      bridgeToken;
+    .textContent =
+      '⏳ Zpracovávám ' +
+      code +
+      '...';
 
 
   document
     .getElementById(
-      'bridgeCode'
+      'scanCode'
     )
     .value =
       code;
 
 
-  document
-    .getElementById(
-      'bridgeRecordId'
-    )
-    .value =
-      '';
-
-
   const form =
     document
       .getElementById(
-        'bridgeForm'
+        'scanForm'
       );
 
 
@@ -1342,466 +1054,61 @@ function submitQr(code) {
 
 
 // =====================================================
-// VÝSLEDEK QR
+// VÝSLEDEK SE NAČETL
 // =====================================================
 
-function handleScanResult(result) {
-
-  scannerBusy =
-    false;
-
-
-  lastCode =
-    '';
-
-
-  lastScanTime =
-    0;
-
-
-  if (!result) {
-
-    showScannerMessage(
-
-      '❌ Chyba',
-
-      'Server neposlal odpověď.',
-
-      'error'
-
-    );
-
-
-    return;
-
-  }
-
-
-  if (
-    result.type ===
-    'sessionExpired'
-  ) {
-
-    bridgeToken =
-      '';
-
-
-    showScannerMessage(
-
-      '⏳ Obnovuji spojení...',
-
-      'Zkus kartičku znovu za okamžik.',
-
-      'warning'
-
-    );
-
-
-    requestBridgeSession();
-
-
-    return;
-
-  }
-
-
-  if (
-    result.success &&
-    result.type === 'new'
-  ) {
-
-    showScannerMessage(
-
-      '✅ ' +
-      result.name,
-
-      'Zapsán/a do docházky',
-
-      'success'
-
-    );
-
-
-    if (
-      result.undoRecord
-    ) {
-
-      lastUndoRecord =
-        result.undoRecord;
-
-
-      document
-        .getElementById(
-          'undoQrButton'
-        )
-        .style.display =
-          'block';
-
-    }
-
-
-    refreshPanel();
-
-
-    return;
-
-  }
-
-
-  if (
-    result.success &&
-    result.type === 'duplicate'
-  ) {
-
-    showScannerMessage(
-
-      '⚠️ ' +
-      result.name,
-
-      'Už je zapsán/a do této lekce',
-
-      'warning'
-
-    );
-
-
-    return;
-
-  }
-
-
-  if (
-    result.type ===
-    'inactiveCard'
-  ) {
-
-    showScannerMessage(
-
-      '🚫 ' +
-      (
-        result.name ||
-        result.id
-      ),
-
-      'Kartička je ukončená. Docházka nebyla zapsána.',
-
-      'error'
-
-    );
-
-
-    return;
-
-  }
-
-
-  if (
-    result.type ===
-    'unknown'
-  ) {
-
-    showScannerMessage(
-
-      '❌ ' +
-      result.id,
-
-      'Kartička nebyla nalezena v Účastnících.',
-
-      'error'
-
-    );
-
-
-    return;
-
-  }
-
-
-  if (
-    result.type ===
-    'busy'
-  ) {
-
-    showScannerMessage(
-
-      '⏳ Zkus kartičku znovu',
-
-      result.message,
-
-      'warning'
-
-    );
-
-
-    return;
-
-  }
-
-
-  showScannerMessage(
-
-    '❌ Nelze zapsat',
-
-    result.message ||
-    'Neznámá chyba.',
-
-    'error'
-
-  );
-
-}
-
-
-// =====================================================
-// ZRUŠIT POSLEDNÍ QR ZÁPIS
-// =====================================================
-
-function undoQrAttendance() {
-
-  if (
-    !lastUndoRecord ||
-    !lastUndoRecord.recordId
-  ) {
-
-    return;
-
-  }
-
-
-  const confirmed =
-    confirm(
-
-      'Opravdu odstranit tento QR zápis z docházky?\n\n' +
-
-      'Potom bude možné účastníka zapsat znovu.'
-
-    );
-
-
-  if (!confirmed) {
-
-    return;
-
-  }
-
-
-  scannerBusy =
-    true;
-
-
-  showScannerMessage(
-
-    '⏳ Ruším zápis...',
-
-    lastUndoRecord.name || '',
-
-    'warning'
-
-  );
-
-
-  document
-    .getElementById(
-      'bridgeAction'
-    )
-    .value =
-      'bridgeUndo';
-
-
-  document
-    .getElementById(
-      'bridgeToken'
-    )
-    .value =
-      bridgeToken;
-
-
-  document
-    .getElementById(
-      'bridgeCode'
-    )
-    .value =
-      '';
-
-
-  document
-    .getElementById(
-      'bridgeRecordId'
-    )
-    .value =
-      lastUndoRecord.recordId;
-
-
-  const form =
-    document
-      .getElementById(
-        'bridgeForm'
-      );
-
-
-  form.action =
-    WEBAPP_URL;
-
-
-  form.submit();
-
-}
-
-
-// =====================================================
-// VÝSLEDEK SMAZÁNÍ
-// =====================================================
-
-function handleUndoResult(result) {
-
-  scannerBusy =
-    false;
-
-
-  clearUndoQr();
-
-
-  if (
-    result &&
-    result.success
-  ) {
-
-    showScannerMessage(
-
-      '🗑️ Zápis zrušen',
-
-      result.name +
-      ' byl/a odstraněn/a z docházky.',
-
-      'warning'
-
-    );
-
-
-    refreshPanel();
-
-
-    return;
-
-  }
-
-
-  showScannerMessage(
-
-    '❌ Zápis se nepodařilo zrušit',
-
-    result
-      ? result.message
-      : 'Neznámá chyba.',
-
-    'error'
-
-  );
-
-}
-
-
-// =====================================================
-// ZPRÁVY Z APPS SCRIPT BRIDGE
-// =====================================================
-
-window.addEventListener(
-
-  'message',
-
-  function(event) {
-
-    if (!event.data) {
-
-      return;
-
-    }
-
-
-    if (
-      event.data.type ===
-      'bridge-session'
-    ) {
-
-      bridgeToken =
-        String(
-          event.data.token || ''
-        );
-
-
-      if (!bridgeToken) {
+document
+  .getElementById(
+    'scanResultFrame'
+  )
+  .addEventListener(
+
+    'load',
+
+    function() {
+
+      if (
+        !pendingScan
+      ) {
 
         return;
 
       }
 
 
+      pendingScan =
+        false;
+
+
       scannerBusy =
         false;
 
 
-      if (
-        pendingStartAttendance
-      ) {
-
-        pendingStartAttendance =
-          false;
+      lastCode =
+        '';
 
 
-        attendanceMode =
-          true;
+      lastScanTime =
+        Date.now();
 
 
-        showScannerMessage(
-
-          '🟢 Připraveno',
-
-          'Naskenuj první kartičku.',
-
-          'success'
-
-        );
-
-      }
+      document
+        .getElementById(
+          'scanStatus'
+        )
+        .style.display =
+          'none';
 
 
-      return;
+      // =================================================
+      // AUTOMATICKY OBNOVÍME PANEL
+      // =================================================
+
+      refreshPanel();
 
     }
 
-
-    if (
-      event.data.type ===
-      'bridge-scan-result'
-    ) {
-
-      handleScanResult(
-        event.data.result
-      );
-
-
-      return;
-
-    }
-
-
-    if (
-      event.data.type ===
-      'bridge-undo-result'
-    ) {
-
-      handleUndoResult(
-        event.data.result
-      );
-
-
-      return;
-
-    }
-
-  }
-
-);
+  );
 
 
 // =====================================================
@@ -1829,20 +1136,12 @@ function refreshPanel() {
 
 
 // =====================================================
-// ZMĚNIT KAMERU
+// ZMĚNA KAMERY
 // =====================================================
 
 async function changeCamera() {
 
   attendanceMode =
-    false;
-
-
-  scannerBusy =
-    false;
-
-
-  pendingStartAttendance =
     false;
 
 
@@ -1854,7 +1153,12 @@ async function changeCamera() {
     false;
 
 
-  clearUndoQr();
+  scannerBusy =
+    false;
+
+
+  pendingScan =
+    false;
 
 
   lastCode =
@@ -1882,17 +1186,6 @@ async function changeCamera() {
     )
     .style.display =
       'none';
-
-
-  showScannerMessage(
-
-    '📷 Vyber kameru',
-
-    'Proveď nový test QR kódu.',
-
-    ''
-
-  );
 
 
   window.scrollTo({
@@ -1948,98 +1241,6 @@ async function stopScanner() {
 
   scanning =
     false;
-
-}
-
-
-// =====================================================
-// VÝPIS STAVU
-// =====================================================
-
-function showScannerMessage(
-  name,
-  detail,
-  type
-) {
-
-  const box =
-    document
-      .getElementById(
-        'scanResult'
-      );
-
-
-  box.className =
-    '';
-
-
-  if (
-    type === 'success'
-  ) {
-
-    box.classList.add(
-      'scan-success'
-    );
-
-  }
-
-
-  if (
-    type === 'warning'
-  ) {
-
-    box.classList.add(
-      'scan-warning'
-    );
-
-  }
-
-
-  if (
-    type === 'error'
-  ) {
-
-    box.classList.add(
-      'scan-error'
-    );
-
-  }
-
-
-  document
-    .getElementById(
-      'scanResultName'
-    )
-    .textContent =
-      name;
-
-
-  document
-    .getElementById(
-      'scanResultDetail'
-    )
-    .textContent =
-      detail;
-
-}
-
-
-// =====================================================
-// CLEAR QR UNDO
-// =====================================================
-
-function clearUndoQr() {
-
-  lastUndoRecord =
-    null;
-
-
-  document
-    .getElementById(
-      'undoQrButton'
-    )
-    .style.display =
-      'none';
 
 }
 
