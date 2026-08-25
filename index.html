@@ -1,101 +1,231 @@
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
+
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+    content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <title>Test QR skeneru</title>
 
   <script src="https://unpkg.com/html5-qrcode"></script>
 
   <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+
       margin: 0;
-      padding: 20px;
+      padding: 16px;
+
       font-family: Arial, sans-serif;
+
       background: #f5f5f5;
       color: #222;
+
     }
 
     .container {
+
       max-width: 600px;
       margin: auto;
+
     }
 
     h1 {
+
       text-align: center;
+      margin-top: 5px;
+
     }
 
     .info {
+
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
       color: #666;
+
+    }
+
+    .camera-box {
+
+      background: white;
+
+      padding: 14px;
+
+      border-radius: 14px;
+
+      margin-bottom: 12px;
+
+    }
+
+    select {
+
+      width: 100%;
+
+      padding: 13px;
+
+      font-size: 16px;
+
+      border-radius: 9px;
+
+      border: 1px solid #ccc;
+
+      background: white;
+
     }
 
     #reader {
+
       width: 100%;
-      background: white;
+
+      background: #111;
+
       border-radius: 16px;
+
       overflow: hidden;
+
     }
 
     #result {
-      margin-top: 20px;
+
+      margin-top: 14px;
+
       padding: 20px;
+
       background: white;
+
       border-radius: 12px;
+
       text-align: center;
+
       font-size: 20px;
-      min-height: 30px;
+
+      min-height: 65px;
+
     }
 
     .success {
+
       background: #e8f7e8 !important;
+
       border: 2px solid #58a65c;
+
     }
 
     .error {
+
       background: #ffe8e8 !important;
+
       border: 2px solid #d85c5c;
+
+    }
+
+    .warning {
+
+      background: #fff3cd !important;
+
+      border: 2px solid #d1a000;
+
     }
 
     button {
+
       width: 100%;
-      margin-top: 15px;
+
+      margin-top: 12px;
+
       padding: 16px;
+
       border: none;
+
       border-radius: 12px;
+
       background: #222;
+
       color: white;
+
       font-size: 18px;
+
       font-weight: bold;
+
       cursor: pointer;
+
     }
+
+    .secondary {
+
+      background: white;
+
+      color: #222;
+
+      border: 1px solid #ccc;
+
+    }
+
   </style>
+
 </head>
+
 
 <body>
 
 <div class="container">
 
-  <h1>📷 Test QR skeneru</h1>
+  <h1>
+    📷 Test QR skeneru
+  </h1>
+
 
   <div class="info">
-    Namíř zadní kameru na QR kód kartičky.
+
+    Vyber kameru, která nejlépe ostří na malé QR kódy.
+
   </div>
+
+
+  <div class="camera-box">
+
+    <select id="cameraSelect">
+
+      <option value="">
+        Načítám kamery...
+      </option>
+
+    </select>
+
+  </div>
+
 
   <div id="reader"></div>
 
+
   <div id="result">
-    Čekám na QR kód…
+
+    Nejdřív vyber kameru a spusť skener.
+
   </div>
 
-  <button onclick="startScanner()">
-    📷 Spustit kameru
+
+  <button onclick="startSelectedCamera()">
+
+    📷 Spustit vybranou kameru
+
+  </button>
+
+
+  <button
+    class="secondary"
+    onclick="stopScanner()">
+
+    ⏹ Zastavit kameru
+
   </button>
 
 </div>
@@ -104,183 +234,472 @@
 <script>
 
 let scanner = null;
+
 let scanning = false;
+
 let lastCode = '';
+
 let lastScanTime = 0;
 
 
-function startScanner() {
+// =====================================================
+// NAČTENÍ SEZNAMU KAMER
+// =====================================================
 
-  if (scanning) {
-    return;
-  }
+async function loadCameras() {
+
+  const select =
+    document.getElementById(
+      'cameraSelect'
+    );
+
 
   const result =
-    document.getElementById('result');
-
-  result.className = '';
-  result.textContent =
-    'Spouštím kameru…';
+    document.getElementById(
+      'result'
+    );
 
 
-  scanner =
-    new Html5Qrcode('reader');
+  try {
+
+    const cameras =
+      await Html5Qrcode.getCameras();
 
 
-  Html5Qrcode
-    .getCameras()
-
-    .then(function(cameras) {
-
-      if (!cameras || cameras.length === 0) {
-
-        result.className =
-          'error';
-
-        result.textContent =
-          '❌ Nebyla nalezena žádná kamera.';
-
-        return;
-
-      }
+    select.innerHTML = '';
 
 
-      scanning = true;
+    if (
+      !cameras ||
+      cameras.length === 0
+    ) {
 
+      select.innerHTML =
+        '<option value="">' +
+        'Žádná kamera nenalezena' +
+        '</option>';
 
-      return scanner.start(
-
-        {
-          facingMode: {
-            exact: 'environment'
-          }
-        },
-
-        {
-          fps: 10,
-
-          qrbox: function(
-            viewfinderWidth,
-            viewfinderHeight
-          ) {
-
-            const size =
-              Math.floor(
-                Math.min(
-                  viewfinderWidth,
-                  viewfinderHeight
-                ) * 0.7
-              );
-
-            return {
-              width: size,
-              height: size
-            };
-          }
-        },
-
-        onScanSuccess,
-
-        function() {
-          // Neúspěšné snímky ignorujeme.
-        }
-
-      );
-
-    })
-
-    .then(function() {
-
-      if (scanning) {
-
-        result.className = '';
-
-        result.textContent =
-          '📷 Kamera běží – čekám na QR…';
-
-      }
-
-    })
-
-    .catch(function(error) {
-
-      scanning = false;
 
       result.className =
         'error';
 
-      result.textContent =
-        '❌ Kameru se nepodařilo spustit: ' +
-        error;
 
-    });
+      result.textContent =
+        '❌ Nebyla nalezena kamera.';
+
+
+      return;
+
+    }
+
+
+    cameras.forEach(
+
+      function(camera, index) {
+
+        const option =
+          document.createElement(
+            'option'
+          );
+
+
+        option.value =
+          camera.id;
+
+
+        option.textContent =
+          camera.label
+            ? camera.label
+            : 'Kamera ' + (index + 1);
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+
+    );
+
+
+    // Zkusíme předvybrat kameru,
+    // která v názvu vypadá jako zadní.
+
+    let preferredIndex =
+      -1;
+
+
+    for (
+      let i = 0;
+      i < cameras.length;
+      i++
+    ) {
+
+      const label =
+        String(
+          cameras[i].label || ''
+        ).toLowerCase();
+
+
+      if (
+        label.includes('back') ||
+        label.includes('rear') ||
+        label.includes('environment') ||
+        label.includes('zadní') ||
+        label.includes('zadni')
+      ) {
+
+        preferredIndex =
+          i;
+
+      }
+
+    }
+
+
+    if (
+      preferredIndex >= 0
+    ) {
+
+      select.selectedIndex =
+        preferredIndex;
+
+    }
+
+
+    result.className =
+      '';
+
+
+    result.textContent =
+      'Vyber kameru a spusť skener.';
+
+  } catch (error) {
+
+    result.className =
+      'error';
+
+
+    result.textContent =
+      '❌ Kamery se nepodařilo načíst: ' +
+      error;
+
+  }
 
 }
 
 
+// =====================================================
+// SPUŠTĚNÍ VYBRANÉ KAMERY
+// =====================================================
+
+async function startSelectedCamera() {
+
+  const select =
+    document.getElementById(
+      'cameraSelect'
+    );
+
+
+  const cameraId =
+    select.value;
+
+
+  const result =
+    document.getElementById(
+      'result'
+    );
+
+
+  if (!cameraId) {
+
+    result.className =
+      'error';
+
+
+    result.textContent =
+      '❌ Nejdřív vyber kameru.';
+
+
+    return;
+
+  }
+
+
+  if (scanning) {
+
+    await stopScanner();
+
+  }
+
+
+  scanner =
+    new Html5Qrcode(
+      'reader'
+    );
+
+
+  result.className =
+    '';
+
+
+  result.textContent =
+    'Spouštím kameru…';
+
+
+  try {
+
+    await scanner.start(
+
+      {
+        deviceId: {
+          exact: cameraId
+        }
+      },
+
+      {
+
+        fps: 15,
+
+        // Větší oblast pro malé QR kódy.
+
+        qrbox: function(
+          viewfinderWidth,
+          viewfinderHeight
+        ) {
+
+          const width =
+            Math.floor(
+              viewfinderWidth * 0.9
+            );
+
+
+          const height =
+            Math.floor(
+              Math.min(
+                viewfinderHeight * 0.75,
+                width
+              )
+            );
+
+
+          return {
+
+            width: width,
+
+            height: height
+
+          };
+
+        },
+
+        // Zkusíme získat kvalitnější obraz.
+
+        videoConstraints: {
+
+          deviceId: {
+            exact: cameraId
+          },
+
+          width: {
+            ideal: 1920
+          },
+
+          height: {
+            ideal: 1080
+          },
+
+          frameRate: {
+            ideal: 30
+          }
+
+        }
+
+      },
+
+      onScanSuccess,
+
+      function() {
+
+        // Neúspěšné snímky ignorujeme.
+
+      }
+
+    );
+
+
+    scanning =
+      true;
+
+
+    result.className =
+      '';
+
+
+    result.textContent =
+      '📷 Kamera běží – přibliž QR kód.';
+
+  } catch (error) {
+
+    scanning =
+      false;
+
+
+    result.className =
+      'error';
+
+
+    result.textContent =
+      '❌ Kameru se nepodařilo spustit: ' +
+      error;
+
+  }
+
+}
+
+
+// =====================================================
+// ZASTAVENÍ
+// =====================================================
+
+async function stopScanner() {
+
+  if (
+    !scanner ||
+    !scanning
+  ) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await scanner.stop();
+
+  } catch (error) {
+
+    // Ignorujeme.
+
+  }
+
+
+  try {
+
+    scanner.clear();
+
+  } catch (error) {
+
+    // Ignorujeme.
+
+  }
+
+
+  scanning =
+    false;
+
+}
+
+
+// =====================================================
+// ÚSPĚŠNÝ QR SKEN
+// =====================================================
+
 function onScanSuccess(decodedText) {
 
   const code =
-    String(decodedText || '')
+    String(
+      decodedText || ''
+    )
       .trim()
       .toUpperCase();
 
 
   if (!code) {
+
     return;
+
   }
 
 
-  // Zabrání opakovanému načtení stejné
-  // kartičky několikrát za sebou.
-
-  const now = Date.now();
+  const now =
+    Date.now();
 
 
   if (
     code === lastCode &&
     now - lastScanTime < 3000
   ) {
+
     return;
+
   }
 
 
-  lastCode = code;
-  lastScanTime = now;
+  lastCode =
+    code;
+
+
+  lastScanTime =
+    now;
 
 
   const result =
-    document.getElementById('result');
+    document.getElementById(
+      'result'
+    );
 
 
-  // Prozatím kontrolujeme jen formát
-  // našich kartiček.
-
-  if (/^[MF]\d+$/.test(code)) {
+  if (
+    /^[MF]\d+$/.test(
+      code
+    )
+  ) {
 
     result.className =
       'success';
 
+
     result.innerHTML =
-      '✅ QR přečten<br><strong>' +
+
+      '✅ QR přečten<br><br>' +
+
+      '<strong style="font-size:32px;">' +
+
       code +
+
       '</strong>';
 
   } else {
 
     result.className =
-      'error';
+      'warning';
+
 
     result.innerHTML =
-      '❌ Neznámý QR kód<br><strong>' +
+
+      '⚠️ QR přečten, ale není ve formátu M/F:<br><br>' +
+
+      '<strong>' +
+
       code +
+
       '</strong>';
 
   }
 
 }
 
+
+// =====================================================
+// START
+// =====================================================
+
+loadCameras();
+
 </script>
 
 </body>
+
 </html>
