@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>Test QR skeneru</title>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .info {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    #reader {
+      width: 100%;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 20px;
+      min-height: 30px;
+    }
+
+    .success {
+      background: #e8f7e8 !important;
+      border: 2px solid #58a65c;
+    }
+
+    .error {
+      background: #ffe8e8 !important;
+      border: 2px solid #d85c5c;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>📷 Test QR skeneru</h1>
+
+  <div class="info">
+    Namíř zadní kameru na QR kód kartičky.
+  </div>
+
+  <div id="reader"></div>
+
+  <div id="result">
+    Čekám na QR kód…
+  </div>
+
+  <button onclick="startScanner()">
+    📷 Spustit kameru
+  </button>
+
+</div>
+
+
+<script>
+
+let scanner = null;
+let scanning = false;
+let lastCode = '';
+let lastScanTime = 0;
+
+
+function startScanner() {
+
+  if (scanning) {
+    return;
+  }
+
+  const result =
+    document.getElementById('result');
+
+  result.className = '';
+  result.textContent =
+    'Spouštím kameru…';
+
+
+  scanner =
+    new Html5Qrcode('reader');
+
+
+  Html5Qrcode
+    .getCameras()
+
+    .then(function(cameras) {
+
+      if (!cameras || cameras.length === 0) {
+
+        result.className =
+          'error';
+
+        result.textContent =
+          '❌ Nebyla nalezena žádná kamera.';
+
+        return;
+
+      }
+
+
+      scanning = true;
+
+
+      return scanner.start(
+
+        {
+          facingMode: {
+            exact: 'environment'
+          }
+        },
+
+        {
+          fps: 10,
+
+          qrbox: function(
+            viewfinderWidth,
+            viewfinderHeight
+          ) {
+
+            const size =
+              Math.floor(
+                Math.min(
+                  viewfinderWidth,
+                  viewfinderHeight
+                ) * 0.7
+              );
+
+            return {
+              width: size,
+              height: size
+            };
+          }
+        },
+
+        onScanSuccess,
+
+        function() {
+          // Neúspěšné snímky ignorujeme.
+        }
+
+      );
+
+    })
+
+    .then(function() {
+
+      if (scanning) {
+
+        result.className = '';
+
+        result.textContent =
+          '📷 Kamera běží – čekám na QR…';
+
+      }
+
+    })
+
+    .catch(function(error) {
+
+      scanning = false;
+
+      result.className =
+        'error';
+
+      result.textContent =
+        '❌ Kameru se nepodařilo spustit: ' +
+        error;
+
+    });
+
+}
+
+
+function onScanSuccess(decodedText) {
+
+  const code =
+    String(decodedText || '')
+      .trim()
+      .toUpperCase();
+
+
+  if (!code) {
+    return;
+  }
+
+
+  // Zabrání opakovanému načtení stejné
+  // kartičky několikrát za sebou.
+
+  const now = Date.now();
+
+
+  if (
+    code === lastCode &&
+    now - lastScanTime < 3000
+  ) {
+    return;
+  }
+
+
+  lastCode = code;
+  lastScanTime = now;
+
+
+  const result =
+    document.getElementById('result');
+
+
+  // Prozatím kontrolujeme jen formát
+  // našich kartiček.
+
+  if (/^[MF]\d+$/.test(code)) {
+
+    result.className =
+      'success';
+
+    result.innerHTML =
+      '✅ QR přečten<br><strong>' +
+      code +
+      '</strong>';
+
+  } else {
+
+    result.className =
+      'error';
+
+    result.innerHTML =
+      '❌ Neznámý QR kód<br><strong>' +
+      code +
+      '</strong>';
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
