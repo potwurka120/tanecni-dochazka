@@ -59,6 +59,10 @@
     }
 
 
+    /* =================================================
+       KAMERA
+       ================================================= */
+
     .camera-box {
 
       background: white;
@@ -193,6 +197,10 @@
     }
 
 
+    /* =================================================
+       VIDEO
+       ================================================= */
+
     .video-box {
 
       position: relative;
@@ -246,6 +254,10 @@
 
     }
 
+
+    /* =================================================
+       STAV
+       ================================================= */
 
     #cameraMessage {
 
@@ -323,6 +335,10 @@
     }
 
 
+    /* =================================================
+       POSLEDNÍ VÝSLEDEK
+       ================================================= */
+
     .result-box {
 
       margin-top: 10px;
@@ -366,6 +382,155 @@
     }
 
 
+    /* =================================================
+       HISTORIE SKENOVÁNÍ
+       ================================================= */
+
+    #historyBox {
+
+      display: none;
+
+      margin-top: 10px;
+
+      padding: 15px;
+
+      background: white;
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.08);
+
+    }
+
+
+    .history-title {
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .history-note {
+
+      color: #777;
+
+      font-size: 12px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .history-item {
+
+      display: grid;
+
+      grid-template-columns:
+        48px 52px 1fr;
+
+      gap: 6px;
+
+      align-items: center;
+
+      padding: 10px 2px;
+
+      border-bottom:
+        1px solid #eee;
+
+    }
+
+
+    .history-item:last-child {
+
+      border-bottom: none;
+
+    }
+
+
+    .history-time {
+
+      color: #777;
+
+      font-size: 13px;
+
+    }
+
+
+    .history-card {
+
+      font-weight: bold;
+
+    }
+
+
+    .history-name {
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+    }
+
+
+    .history-status {
+
+      grid-column:
+        3;
+
+      font-size: 12px;
+
+      margin-top: -3px;
+
+    }
+
+
+    .history-success {
+
+      color: #176b2c;
+
+    }
+
+
+    .history-warning {
+
+      color: #8a6900;
+
+    }
+
+
+    .history-error {
+
+      color: #b22;
+
+    }
+
+
+    .history-hidden {
+
+      display: none;
+
+    }
+
+
+    #emptyHistory {
+
+      color: #777;
+
+      padding: 8px 0;
+
+    }
+
+
+    /* =================================================
+       RUČNÍ PANEL
+       ================================================= */
+
     #doorContainer {
 
       display: none;
@@ -379,7 +544,7 @@
 
       width: 100%;
 
-      min-height: 720px;
+      min-height: 430px;
 
       border: none;
 
@@ -421,19 +586,19 @@
 
 
   <h1>
-
     💃 Taneční docházka
-
   </h1>
 
+
+  <!-- =================================================
+       KAMERA
+       ================================================= -->
 
   <div class="camera-box">
 
 
     <div class="camera-title">
-
       📷 Odbavování u dveří
-
     </div>
 
 
@@ -454,9 +619,7 @@
       <select id="cameraSelect">
 
         <option value="">
-
           Načítám kamery...
-
         </option>
 
       </select>
@@ -509,13 +672,15 @@
   </div>
 
 
+  <!-- =================================================
+       POSLEDNÍ VÝSLEDEK
+       ================================================= -->
+
   <div class="result-box">
 
 
     <div class="result-label">
-
       POSLEDNÍ NAČTENÍ
-
     </div>
 
 
@@ -541,6 +706,66 @@
   </div>
 
 
+  <!-- =================================================
+       HISTORIE TOHOTO TELEFONU
+       ================================================= -->
+
+  <div id="historyBox">
+
+
+    <div class="history-title">
+
+      📋 Historie skenování
+
+    </div>
+
+
+    <div class="history-note">
+
+      Zobrazuje skeny provedené pouze na tomto telefonu.
+      Nejde o aktuální stav docházky.
+
+    </div>
+
+
+    <div id="historyList">
+
+      <div id="emptyHistory">
+
+        Zatím žádný sken.
+
+      </div>
+
+    </div>
+
+
+    <button
+      id="olderHistoryButton"
+      class="secondary"
+      onclick="toggleHistory()"
+      style="display:none;">
+
+      Zobrazit starší skeny ▾
+
+    </button>
+
+
+    <button
+      class="secondary"
+      onclick="clearScanHistory()">
+
+      🧹 Vymazat historii tohoto telefonu
+
+    </button>
+
+
+  </div>
+
+
+  <!-- =================================================
+       RUČNÍ ZÁPIS
+       ================================================= -->
+
   <div id="doorContainer">
 
     <iframe
@@ -550,6 +775,10 @@
 
   </div>
 
+
+  <!-- =================================================
+       DOLE
+       ================================================= -->
 
   <div id="bottomControls">
 
@@ -576,6 +805,10 @@
   </div>
 
 
+  <!-- =================================================
+       QR FORM
+       ================================================= -->
+
   <form
     id="scanForm"
     method="POST"
@@ -596,6 +829,10 @@
 
   </form>
 
+
+  <!-- =================================================
+       PŘEHLEDY V TABULCE
+       ================================================= -->
 
   <iframe
     id="overviewFrame"
@@ -624,6 +861,10 @@
 <script type="module">
 
 
+// =====================================================
+// QR SCANNER
+// =====================================================
+
 import QrScanner
   from 'https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js';
 
@@ -643,6 +884,28 @@ const DOOR_PANEL_URL =
 
 const HOME_URL =
   WEBAPP_URL;
+
+
+// =====================================================
+// HISTORIE
+//
+// Každý telefon / prohlížeč má svoji.
+// =====================================================
+
+const HISTORY_KEY =
+  'danceAttendanceScanHistory';
+
+
+const MAX_HISTORY =
+  50;
+
+
+let historyExpanded =
+  false;
+
+
+let scanHistory =
+  [];
 
 
 // =====================================================
@@ -793,6 +1056,10 @@ function prepareAudio() {
 }
 
 
+// =====================================================
+// PÍPNUTÍ
+// =====================================================
+
 function beep(
   frequency,
   duration
@@ -808,16 +1075,17 @@ function beep(
 
 
     const oscillator =
-      audioContext
-        .createOscillator();
+      audioContext.createOscillator();
 
 
     const gain =
-      audioContext
-        .createGain();
+      audioContext.createGain();
 
 
-    oscillator.connect(gain);
+    oscillator.connect(
+      gain
+    );
+
 
     gain.connect(
       audioContext.destination
@@ -846,6 +1114,7 @@ function beep(
 
     oscillator.start(now);
 
+
     oscillator.stop(
       now + duration
     );
@@ -869,7 +1138,9 @@ const scanner =
 
     function(result) {
 
-      processQr(result);
+      processQr(
+        result
+      );
 
     },
 
@@ -893,6 +1164,447 @@ const scanner =
     }
 
   );
+
+
+// =====================================================
+// HISTORIE – NAČTENÍ
+// =====================================================
+
+function loadScanHistory() {
+
+  try {
+
+    const saved =
+      sessionStorage.getItem(
+        HISTORY_KEY
+      );
+
+
+    if (saved) {
+
+      const parsed =
+        JSON.parse(saved);
+
+
+      if (
+        Array.isArray(parsed)
+      ) {
+
+        scanHistory =
+          parsed;
+
+      }
+
+    }
+
+  } catch (error) {
+
+    scanHistory =
+      [];
+
+  }
+
+
+  renderScanHistory();
+
+}
+
+
+// =====================================================
+// HISTORIE – ULOŽIT
+// =====================================================
+
+function saveScanHistory() {
+
+  try {
+
+    sessionStorage.setItem(
+
+      HISTORY_KEY,
+
+      JSON.stringify(
+        scanHistory
+      )
+
+    );
+
+  } catch (error) {
+
+  }
+
+}
+
+
+// =====================================================
+// PŘIDAT SKEN DO HISTORIE
+// =====================================================
+
+function addScanToHistory(
+  data
+) {
+
+  const now =
+    new Date();
+
+
+  const time =
+    now.toLocaleTimeString(
+
+      'cs-CZ',
+
+      {
+        hour:
+          '2-digit',
+
+        minute:
+          '2-digit'
+      }
+
+    );
+
+
+  let statusText =
+    'Nelze zapsat';
+
+
+  let statusType =
+    'error';
+
+
+  if (
+    data.success &&
+    data.resultType ===
+      'new'
+  ) {
+
+    statusText =
+      'Zapsán/a';
+
+
+    statusType =
+      'success';
+
+  }
+
+
+  else if (
+    data.success &&
+    data.resultType ===
+      'duplicate'
+  ) {
+
+    statusText =
+      'Už byl/a zapsán/a';
+
+
+    statusType =
+      'warning';
+
+  }
+
+
+  else if (
+    data.resultType ===
+      'inactiveCard'
+  ) {
+
+    statusText =
+      'Ukončená kartička';
+
+
+    statusType =
+      'error';
+
+  }
+
+
+  else if (
+    data.resultType ===
+      'unknown'
+  ) {
+
+    statusText =
+      'Neznámá kartička';
+
+
+    statusType =
+      'error';
+
+  }
+
+
+  else if (
+    data.resultType ===
+      'busy'
+  ) {
+
+    statusText =
+      'Nezapsáno – zkus znovu';
+
+
+    statusType =
+      'warning';
+
+  }
+
+
+  scanHistory.unshift({
+
+    time:
+      time,
+
+    cardId:
+      data.cardId || '?',
+
+    name:
+      data.name || 'Neznámý účastník',
+
+    status:
+      statusText,
+
+    statusType:
+      statusType,
+
+    event:
+      data.event || ''
+
+  });
+
+
+  scanHistory =
+    scanHistory.slice(
+      0,
+      MAX_HISTORY
+    );
+
+
+  saveScanHistory();
+
+
+  renderScanHistory();
+
+}
+
+
+// =====================================================
+// VYKRESLIT HISTORII
+// =====================================================
+
+function renderScanHistory() {
+
+  const box =
+    document.getElementById(
+      'historyBox'
+    );
+
+
+  const container =
+    document.getElementById(
+      'historyList'
+    );
+
+
+  const button =
+    document.getElementById(
+      'olderHistoryButton'
+    );
+
+
+  container.innerHTML =
+    '';
+
+
+  if (
+    !scanHistory.length
+  ) {
+
+    container.innerHTML =
+
+      '<div id="emptyHistory">' +
+
+      'Zatím žádný sken.' +
+
+      '</div>';
+
+
+    button.style.display =
+      'none';
+
+
+    return;
+
+  }
+
+
+  box.style.display =
+    attendanceMode
+      ? 'block'
+      : box.style.display;
+
+
+  scanHistory.forEach(
+
+    function(item, index) {
+
+      const div =
+        document.createElement(
+          'div'
+        );
+
+
+      div.className =
+        'history-item';
+
+
+      if (
+        index >= 5 &&
+        !historyExpanded
+      ) {
+
+        div.classList.add(
+          'history-hidden'
+        );
+
+      }
+
+
+      const time =
+        document.createElement(
+          'div'
+        );
+
+
+      time.className =
+        'history-time';
+
+
+      time.textContent =
+        item.time;
+
+
+      const card =
+        document.createElement(
+          'div'
+        );
+
+
+      card.className =
+        'history-card';
+
+
+      card.textContent =
+        item.cardId;
+
+
+      const name =
+        document.createElement(
+          'div'
+        );
+
+
+      name.className =
+        'history-name';
+
+
+      name.textContent =
+        item.name;
+
+
+      const status =
+        document.createElement(
+          'div'
+        );
+
+
+      status.className =
+
+        'history-status history-' +
+
+        item.statusType;
+
+
+      status.textContent =
+        item.status;
+
+
+      div.appendChild(time);
+
+      div.appendChild(card);
+
+      div.appendChild(name);
+
+      div.appendChild(status);
+
+
+      container.appendChild(div);
+
+    }
+
+  );
+
+
+  button.style.display =
+    scanHistory.length > 5
+      ? 'block'
+      : 'none';
+
+
+  button.textContent =
+    historyExpanded
+      ? 'Skrýt starší skeny ▴'
+      : 'Zobrazit starší skeny ▾';
+
+}
+
+
+// =====================================================
+// STARŠÍ HISTORIE
+// =====================================================
+
+window.toggleHistory =
+  function() {
+
+    historyExpanded =
+      !historyExpanded;
+
+
+    renderScanHistory();
+
+  };
+
+
+// =====================================================
+// VYMAZAT HISTORII TELEFONU
+// =====================================================
+
+window.clearScanHistory =
+  function() {
+
+    if (
+      !confirm(
+        'Opravdu vymazat historii skenování na tomto telefonu? Docházka v tabulce se tím nezmění.'
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    scanHistory =
+      [];
+
+
+    historyExpanded =
+      false;
+
+
+    saveScanHistory();
+
+
+    renderScanHistory();
+
+  };
 
 
 // =====================================================
@@ -921,6 +1633,24 @@ async function loadCameras() {
 
     cameraSelect.innerHTML =
       '';
+
+
+    if (
+      !cameras ||
+      !cameras.length
+    ) {
+
+      cameraMessage.className =
+        'error';
+
+
+      cameraMessage.textContent =
+        '❌ Nebyla nalezena žádná kamera.';
+
+
+      return;
+
+    }
 
 
     cameras.forEach(
@@ -973,6 +1703,7 @@ async function loadCameras() {
             cameraSelect.options
           )
           .some(
+
             function(option) {
 
               return (
@@ -981,6 +1712,7 @@ async function loadCameras() {
               );
 
             }
+
           );
 
 
@@ -1024,7 +1756,7 @@ async function loadCameras() {
 
 
 // =====================================================
-// TEST
+// TEST KAMERY
 // =====================================================
 
 async function startSelectedCamera() {
@@ -1065,6 +1797,10 @@ async function startSelectedCamera() {
 
   lastCode =
     '';
+
+
+  lastScanTime =
+    0;
 
 
   confirmCameraButton
@@ -1110,17 +1846,19 @@ async function startSelectedCamera() {
 
 
 // =====================================================
-// QR
+// QR PŘEČTEN
 // =====================================================
 
 function processQr(scanResult) {
 
   const code =
     String(
+
       scanResult &&
       scanResult.data
         ? scanResult.data
         : ''
+
     )
       .trim()
       .toUpperCase();
@@ -1139,7 +1877,8 @@ function processQr(scanResult) {
 
   if (
     code === lastCode &&
-    now - lastScanTime < 2500
+    now - lastScanTime <
+      2500
   ) {
 
     return;
@@ -1155,7 +1894,9 @@ function processQr(scanResult) {
     now;
 
 
+  // =================================================
   // TEST
+  // =================================================
 
   if (testMode) {
 
@@ -1215,7 +1956,9 @@ function processQr(scanResult) {
   }
 
 
+  // =================================================
   // OSTRÝ REŽIM
+  // =================================================
 
   if (
     !attendanceMode ||
@@ -1238,7 +1981,9 @@ function processQr(scanResult) {
   }
 
 
-  submitQr(code);
+  submitQr(
+    code
+  );
 
 }
 
@@ -1248,6 +1993,9 @@ function processQr(scanResult) {
 // =====================================================
 
 function confirmCamera() {
+
+  prepareAudio();
+
 
   if (
     !cameraTestSuccessful
@@ -1260,7 +2008,7 @@ function confirmCamera() {
 
   if (
     WEBAPP_URL ===
-      'MUJWEBAPPURL'
+    'MUJWEBAPPURL'
   ) {
 
     alert(
@@ -1305,6 +2053,10 @@ function confirmCamera() {
     '';
 
 
+  lastScanTime =
+    0;
+
+
   document
     .getElementById(
       'setupControls'
@@ -1330,6 +2082,14 @@ function confirmCamera() {
 
   document
     .getElementById(
+      'historyBox'
+    )
+    .style.display =
+      'block';
+
+
+  document
+    .getElementById(
       'doorContainer'
     )
     .style.display =
@@ -1344,12 +2104,14 @@ function confirmCamera() {
       'block';
 
 
-  // DoorPanel načteme POUZE jednou.
+  // Ruční panel načteme jednou.
+  // Po QR už se nenačítá znovu.
 
   doorFrame.src =
-    DOOR_PANEL_URL +
-    '&v=' +
-    Date.now();
+    DOOR_PANEL_URL;
+
+
+  renderScanHistory();
 
 
   resultFrame.srcdoc =
@@ -1400,7 +2162,7 @@ function submitQr(code) {
   cancelOverviewRefresh();
 
 
-  // JEDINÉ "ZPRACOVÁVÁM" JE TADY.
+  // Jen JEDNA hláška Zpracovávám.
 
   const status =
     document.getElementById(
@@ -1445,7 +2207,7 @@ function submitQr(code) {
 
 
 // =====================================================
-// ZPRÁVA ZE SERVERU
+// ODPOVĚĎ ZE SERVERU
 // =====================================================
 
 window.addEventListener(
@@ -1462,18 +2224,28 @@ window.addEventListener(
 
 
     // =================================================
-    // QR DOKONČEN
+    // QR VÝSLEDEK
     // =================================================
 
     if (
       event.data.type ===
-        'attendance-result'
+      'attendance-result'
     ) {
 
-      finishScan();
+      // =================================================
+      // NEJDŘÍV ULOŽÍME DO LOKÁLNÍ HISTORIE.
+      //
+      // ŽÁDNÝ DOTAZ NA TABULKU.
+      // =================================================
+
+      addScanToHistory(
+        event.data
+      );
 
 
-      refreshDoorPanelData();
+      finishScan(
+        event.data
+      );
 
 
       scheduleOverviewRefresh();
@@ -1486,11 +2258,13 @@ window.addEventListener(
 
     // =================================================
     // ZÁPIS SMAZÁN
+    //
+    // HISTORII NESMAŽEME.
     // =================================================
 
     if (
       event.data.type ===
-        'attendance-undo-result'
+      'attendance-undo-result'
     ) {
 
       scannerBusy =
@@ -1513,9 +2287,6 @@ window.addEventListener(
         '🟢 Připraveno na další kartičku';
 
 
-      refreshDoorPanelData();
-
-
       scheduleOverviewRefresh();
 
 
@@ -1529,10 +2300,10 @@ window.addEventListener(
 
 
 // =====================================================
-// HOTOVO
+// DOKONČENÍ SKENU
 // =====================================================
 
-function finishScan() {
+function finishScan(data) {
 
   pendingScan =
     false;
@@ -1566,46 +2337,21 @@ function finishScan() {
     '🟢 Připraveno na další kartičku';
 
 
-  beep(
-    920,
-    0.11
-  );
+  // =================================================
+  // ZVUK JEN U NOVÉHO ÚSPĚŠNÉHO ZÁPISU
+  // =================================================
 
-}
+  if (
+    data &&
+    data.success &&
+    data.resultType ===
+      'new'
+  ) {
 
-
-// =====================================================
-// OBNOVIT JEN DATA DOOR PANELU
-//
-// ŽÁDNÝ RELOAD IFRAME.
-// ŽÁDNÉ NOVÉ NAČÍTÁNÍ LEKCE.
-// =====================================================
-
-function refreshDoorPanelData() {
-
-  try {
-
-    if (
-      doorFrame &&
-      doorFrame.contentWindow
-    ) {
-
-      doorFrame
-        .contentWindow
-        .postMessage(
-
-          {
-            type:
-              'refresh-door-panel'
-          },
-
-          '*'
-
-        );
-
-    }
-
-  } catch (error) {
+    beep(
+      920,
+      0.11
+    );
 
   }
 
@@ -1613,7 +2359,7 @@ function refreshDoorPanelData() {
 
 
 // =====================================================
-// ZÁLOHA PRO NĚKTERÉ MOBILY
+// ZÁLOHA PRO PŘÍPAD, ŽE POSTMESSAGE NEPŘIJDE
 // =====================================================
 
 resultFrame.addEventListener(
@@ -1633,21 +2379,42 @@ resultFrame.addEventListener(
 
       function() {
 
-        if (pendingScan) {
+        if (
+          pendingScan
+        ) {
 
-          finishScan();
+          pendingScan =
+            false;
 
 
-          refreshDoorPanelData();
+          scannerBusy =
+            false;
 
 
-          scheduleOverviewRefresh();
+          lastCode =
+            '';
+
+
+          document
+            .getElementById(
+              'scanStatus'
+            )
+            .style.display =
+              'none';
+
+
+          cameraMessage.className =
+            'success';
+
+
+          cameraMessage.textContent =
+            '🟢 Připraveno na další kartičku';
 
         }
 
       },
 
-      200
+      700
 
     );
 
@@ -1657,7 +2424,7 @@ resultFrame.addEventListener(
 
 
 // =====================================================
-// TABULKOVÉ PŘEHLEDY PO PAUZE
+// PŘEHLEDY V TABULCE AŽ PO PAUZE
 // =====================================================
 
 function scheduleOverviewRefresh() {
@@ -1674,7 +2441,9 @@ function scheduleOverviewRefresh() {
           null;
 
 
-        if (scannerBusy) {
+        if (
+          scannerBusy
+        ) {
 
           scheduleOverviewRefresh();
 
@@ -1705,6 +2474,10 @@ function scheduleOverviewRefresh() {
 }
 
 
+// =====================================================
+// ZRUŠIT ČEKAJÍCÍ PŘEHLED
+// =====================================================
+
 function cancelOverviewRefresh() {
 
   if (
@@ -1725,7 +2498,7 @@ function cancelOverviewRefresh() {
 
 
 // =====================================================
-// ZMĚNIT KAMERU
+// ZMĚNA KAMERY
 // =====================================================
 
 async function changeCamera() {
@@ -1840,6 +2613,8 @@ changeCameraButton
 // =====================================================
 // START
 // =====================================================
+
+loadScanHistory();
 
 loadCameras();
 
