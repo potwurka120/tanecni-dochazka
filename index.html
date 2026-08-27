@@ -11,6 +11,7 @@
 
   <title>Taneční docházka</title>
 
+
   <style>
 
     * {
@@ -140,36 +141,23 @@
 
     .video-box {
       position: relative;
-
       width: min(86vw, 330px);
       max-width: 330px;
-
       aspect-ratio: 1 / 1;
-
       margin: 10px auto 0;
-
       overflow: hidden;
-
       border-radius: 16px;
-
       background: #111;
     }
 
     #qr-video {
       position: absolute;
-
       inset: 0;
-
       width: 100%;
       height: 100%;
-
       object-fit: cover;
-
       display: block;
     }
-
-
-    /* QR scanner overlay */
 
     .scan-region-highlight {
       border-radius: 14px !important;
@@ -218,10 +206,6 @@
     }
 
 
-    /* =================================================
-       ZPRACOVÁVÁM
-       ================================================= */
-
     #scanStatus {
       display: none;
       margin-top: 10px;
@@ -258,7 +242,7 @@
 
     #scanResultFrame {
       width: 100%;
-      min-height: 135px;
+      min-height: 175px;
       border: none;
       display: block;
       background: transparent;
@@ -267,7 +251,6 @@
 
     /* =================================================
        DOOR PANEL
-       Poslední lidé + ruční zápis
        ================================================= */
 
     #doorContainer {
@@ -302,31 +285,10 @@
     }
 
 
-    /* =================================================
-       SKRYTÉ FORMULÁŘE
-       ================================================= */
-
     #scanForm,
     #overviewForm,
     #overviewFrame {
       display: none;
-    }
-
-
-    @media (max-width: 450px) {
-
-      .container {
-        padding: 6px;
-      }
-
-      h1 {
-        font-size: 22px;
-      }
-
-      .video-box {
-        width: min(88vw, 320px);
-      }
-
     }
 
   </style>
@@ -345,10 +307,6 @@
   </h1>
 
 
-  <!-- =================================================
-       QR KAMERA
-       ================================================= -->
-
   <div class="camera-box">
 
 
@@ -356,10 +314,6 @@
       📷 Odbavování u dveří
     </div>
 
-
-    <!-- ===============================================
-         PRVNÍ NASTAVENÍ KAMERY
-         =============================================== -->
 
     <div id="setupControls">
 
@@ -396,10 +350,6 @@
     </div>
 
 
-    <!-- ===============================================
-         VIDEO
-         =============================================== -->
-
     <div class="video-box">
 
       <video
@@ -410,10 +360,6 @@
 
     </div>
 
-
-    <!-- ===============================================
-         STAV
-         =============================================== -->
 
     <div id="cameraMessage">
 
@@ -440,11 +386,10 @@
 
 
   <!-- =================================================
-       POSLEDNÍ NAČTENÝ ČLOVĚK
+       VÝSLEDEK POSLEDNÍHO SKENU
        ================================================= -->
 
   <div class="result-box">
-
 
     <div class="result-label">
       POSLEDNÍ NAČTENÍ
@@ -469,12 +414,11 @@
       ">
     </iframe>
 
-
   </div>
 
 
   <!-- =================================================
-       POSLEDNÍ ODBAVENÍ + RUČNÍ ZÁPIS
+       POSLEDNÍ ODBAVENÍ + RUČNÍ
        ================================================= -->
 
   <div id="doorContainer">
@@ -488,11 +432,10 @@
 
 
   <!-- =================================================
-       ÚPLNĚ DOLE
+       DOLE
        ================================================= -->
 
   <div id="bottomControls">
-
 
     <a
       id="homeLink"
@@ -520,12 +463,11 @@
 
     </div>
 
-
   </div>
 
 
   <!-- =================================================
-       FORMULÁŘ QR
+       QR FORM
        ================================================= -->
 
   <form
@@ -533,29 +475,21 @@
     method="POST"
     target="scanResultFrame">
 
-
-    <!--
-      NOVÝ Code.gs používá action = scan
-    -->
-
     <input
       type="hidden"
       name="action"
       value="scan">
-
 
     <input
       type="hidden"
       id="scanCode"
       name="code">
 
-
   </form>
 
 
   <!-- =================================================
        TABULKOVÉ PŘEHLEDY
-       Aktualizují se až po pauze.
        ================================================= -->
 
   <iframe
@@ -584,10 +518,7 @@
 
 
 // =====================================================
-// QR SCANNER
-//
-// Tohle je knihovna, která ti fungovala.
-// NEMĚNÍME.
+// QR SCANNER – NEMĚNÍME
 // =====================================================
 
 import QrScanner
@@ -596,18 +527,11 @@ import QrScanner
 
 // =====================================================
 // TVOJE APPS SCRIPT URL
-//
-// SEM VLOŽ /exec URL.
-// BEZ ?page=...
 // =====================================================
 
 const WEBAPP_URL =
-  'https://script.google.com/macros/s/AKfycbz4AAoQh6esrTyXvW2YWtp_peuvgYWoGmAlYinO5Q-waWqyHiWqvQh_dpCyMmlHQ_uE/exec';
+  'MUJWEBAPPURL';
 
-
-// =====================================================
-// NOVÁ ARCHITEKTURA
-// =====================================================
 
 const DOOR_PANEL_URL =
   WEBAPP_URL +
@@ -670,10 +594,6 @@ const doorFrame =
   );
 
 
-// =====================================================
-// ODKAZ ZPĚT NA HOME
-// =====================================================
-
 document
   .getElementById(
     'homeLink'
@@ -689,34 +609,26 @@ document
 let selectedCameraId =
   '';
 
-
 let testMode =
   true;
-
 
 let attendanceMode =
   false;
 
-
 let cameraTestSuccessful =
   false;
-
 
 let scannerBusy =
   false;
 
-
 let pendingScan =
   false;
-
 
 let lastCode =
   '';
 
-
 let lastScanTime =
   0;
-
 
 let overviewRefreshTimer =
   null;
@@ -763,18 +675,12 @@ function prepareAudio() {
 
     }
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
   }
 
 }
 
-
-// =====================================================
-// PÍPNUTÍ
-// =====================================================
 
 function beep(
   frequency,
@@ -791,13 +697,11 @@ function beep(
 
 
     const oscillator =
-      audioContext
-        .createOscillator();
+      audioContext.createOscillator();
 
 
     const gain =
-      audioContext
-        .createGain();
+      audioContext.createGain();
 
 
     oscillator.connect(
@@ -828,25 +732,20 @@ function beep(
     );
 
 
-    gain.gain
-      .exponentialRampToValueAtTime(
-        0.001,
-        now + duration
-      );
-
-
-    oscillator.start(
-      now
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      now + duration
     );
 
+
+    oscillator.start(now);
 
     oscillator.stop(
       now + duration
     );
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
   }
 
@@ -893,7 +792,7 @@ const scanner =
 
 
 // =====================================================
-// NAČTENÍ KAMER
+// KAMERY
 // =====================================================
 
 async function loadCameras() {
@@ -907,9 +806,6 @@ async function loadCameras() {
     cameraMessage.textContent =
       '⏳ Povol kameru...';
 
-
-    // Krátce otevřeme kameru,
-    // aby prohlížeč zpřístupnil názvy objektivů.
 
     await scanner.start();
 
@@ -947,10 +843,7 @@ async function loadCameras() {
 
     cameras.forEach(
 
-      function(
-        camera,
-        index
-      ) {
+      function(camera, index) {
 
         const option =
           document.createElement(
@@ -983,10 +876,6 @@ async function loadCameras() {
     );
 
 
-    // =================================================
-    // POSLEDNÍ FUNKČNÍ KAMERA NA TOMTO TELEFONU
-    // =================================================
-
     try {
 
       const savedCameraId =
@@ -1003,9 +892,14 @@ async function loadCameras() {
           )
           .some(
 
-            option =>
-              option.value ===
-              savedCameraId
+            function(option) {
+
+              return (
+                option.value ===
+                savedCameraId
+              );
+
+            }
 
           );
 
@@ -1019,9 +913,7 @@ async function loadCameras() {
 
       }
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
     }
 
@@ -1033,9 +925,8 @@ async function loadCameras() {
     cameraMessage.textContent =
       'Vyber kameru a spusť test.';
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
     cameraMessage.className =
       'error';
@@ -1053,7 +944,7 @@ async function loadCameras() {
 
 
 // =====================================================
-// TEST VYBRANÉ KAMERY
+// TEST
 // =====================================================
 
 async function startSelectedCamera() {
@@ -1066,14 +957,6 @@ async function startSelectedCamera() {
 
 
   if (!selectedCameraId) {
-
-    cameraMessage.className =
-      'error';
-
-
-    cameraMessage.textContent =
-      '❌ Nejdřív vyber kameru.';
-
 
     return;
 
@@ -1135,18 +1018,15 @@ async function startSelectedCamera() {
     cameraMessage.textContent =
       '📷 Kamera běží. Naskenuj testovací kartičku.';
 
-  }
 
-  catch (error) {
+  } catch (error) {
 
     cameraMessage.className =
       'error';
 
 
     cameraMessage.textContent =
-
       '❌ Kameru se nepodařilo spustit: ' +
-
       error;
 
   }
@@ -1155,7 +1035,7 @@ async function startSelectedCamera() {
 
 
 // =====================================================
-// QR PŘEČTEN
+// QR
 // =====================================================
 
 function processQr(
@@ -1164,12 +1044,10 @@ function processQr(
 
   const code =
     String(
-
       scanResult &&
       scanResult.data
         ? scanResult.data
         : ''
-
     )
       .trim()
       .toUpperCase();
@@ -1185,9 +1063,6 @@ function processQr(
   const now =
     Date.now();
 
-
-  // qr-scanner může stejný kód přečíst
-  // mnohokrát za sekundu.
 
   if (
     code === lastCode &&
@@ -1208,7 +1083,7 @@ function processQr(
 
 
   // =================================================
-  // TEST KAMERY
+  // TEST
   // =================================================
 
   if (testMode) {
@@ -1266,17 +1141,8 @@ function processQr(
       'warning';
 
 
-    cameraMessage.innerHTML =
-
-      '⚠️ QR byl přečten, ale nemá správný formát.' +
-
-      '<span class="big-code">' +
-
-      escapeHtml(
-        code
-      ) +
-
-      '</span>';
+    cameraMessage.textContent =
+      '⚠️ QR nemá správný formát.';
 
 
     return;
@@ -1317,7 +1183,7 @@ function processQr(
 
 
 // =====================================================
-// TEST PROŠEL -> SPUSTIT DOCHÁZKU
+// SPUSTIT DOCHÁZKU
 // =====================================================
 
 function confirmCamera() {
@@ -1341,7 +1207,7 @@ function confirmCamera() {
   ) {
 
     alert(
-      'Nejdřív vlož svoji Apps Script WEBAPP_URL.'
+      'Nejdřív vlož WEBAPP_URL.'
     );
 
 
@@ -1350,35 +1216,17 @@ function confirmCamera() {
   }
 
 
-  // =================================================
-  // ULOŽÍME FUNKČNÍ KAMERU NA TOMTO TELEFONU
-  // =================================================
-
   try {
 
     localStorage.setItem(
-
       'attendanceCameraId',
-
       selectedCameraId
-
     );
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
   }
 
-
-  // =================================================
-  // DŮLEŽITÉ:
-  //
-  // KAMERA SE NEVYPÍNÁ.
-  // KAMERA SE NERESTARTUJE.
-  //
-  // Jen TEST -> OSTRÁ DOCHÁZKA.
-  // =================================================
 
   testMode =
     false;
@@ -1448,9 +1296,7 @@ function confirmCamera() {
       'block';
 
 
-  // DoorPanel načítáme pouze jednou.
-
-  loadDoorPanel();
+  reloadDoorPanel();
 
 
   resultFrame.srcdoc =
@@ -1485,24 +1331,7 @@ function confirmCamera() {
 
 
 // =====================================================
-// NAČÍST DOOR PANEL
-// =====================================================
-
-function loadDoorPanel() {
-
-  doorFrame.src =
-
-    DOOR_PANEL_URL +
-
-    '&v=' +
-
-    Date.now();
-
-}
-
-
-// =====================================================
-// ODESLAT QR DO APPS SCRIPTU
+// ODESLÁNÍ QR
 // =====================================================
 
 function submitQr(
@@ -1517,10 +1346,17 @@ function submitQr(
     true;
 
 
-  // Pokud se čekalo na přepočítání
-  // tabulkového Přehledu, QR má přednost.
-
   cancelOverviewRefresh();
+
+
+  cameraMessage.className =
+    'warning';
+
+
+  cameraMessage.textContent =
+    '⏳ Zpracovávám ' +
+    code +
+    '...';
 
 
   const status =
@@ -1534,11 +1370,8 @@ function submitQr(
 
 
   status.textContent =
-
     '⏳ Zpracovávám ' +
-
     code +
-
     '...';
 
 
@@ -1566,10 +1399,7 @@ function submitQr(
 
 
 // =====================================================
-// SERVER POSLAL POSTMESSAGE
-//
-// Nový Code.gs posílá:
-// type = attendance-result
+// ODPOVĚĎ SERVERU
 // =====================================================
 
 window.addEventListener(
@@ -1578,60 +1408,80 @@ window.addEventListener(
 
   function(event) {
 
-    if (
-      !event.data ||
-      event.data.type !==
-        'attendance-result'
-    ) {
+    if (!event.data) {
 
       return;
 
     }
 
 
-    finishScan();
-
-
     // =================================================
-    // OBNOVÍME JEN SEZNAM U DVEŘÍ
-    //
-    // Žádné statistiky.
-    // Žádní chybějící.
-    // Žádný reload celé stránky.
+    // SKEN DOKONČEN
     // =================================================
 
-    try {
+    if (
+      event.data.type ===
+      'attendance-result'
+    ) {
 
-      if (
-        doorFrame &&
-        doorFrame.contentWindow
-      ) {
+      finishScan();
 
-        doorFrame
-          .contentWindow
-          .postMessage(
 
-            {
-              type:
-                'refresh-door-panel'
-            },
+      // Nový zápis nebo i duplicita:
+      // znovu načteme DoorPanel na pozadí.
+      //
+      // Skener už je v tu chvíli odemčený,
+      // takže to neblokuje další kartičku.
 
-            '*'
+      reloadDoorPanel();
 
-          );
 
-      }
+      scheduleOverviewRefresh();
 
-    }
 
-    catch (error) {
+      return;
 
     }
 
 
-    // Přehledy v TABULCE až po pauze.
+    // =================================================
+    // ZÁZNAM BYL SMAZÁN
+    // =================================================
 
-    scheduleOverviewRefresh();
+    if (
+      event.data.type ===
+      'attendance-undo-result'
+    ) {
+
+      scannerBusy =
+        false;
+
+
+      pendingScan =
+        false;
+
+
+      lastCode =
+        '';
+
+
+      cameraMessage.className =
+        'success';
+
+
+      cameraMessage.textContent =
+        '🟢 Připraveno na další kartičku';
+
+
+      reloadDoorPanel();
+
+
+      scheduleOverviewRefresh();
+
+
+      return;
+
+    }
 
   }
 
@@ -1639,10 +1489,7 @@ window.addEventListener(
 
 
 // =====================================================
-// ZÁLOŽNÍ ODEMKNUTÍ SKENERU
-//
-// Pokud by mobil postMessage nepředal,
-// load iframe stejně povolí další QR.
+// ZÁLOHA PRO ODEMKNUTÍ
 // =====================================================
 
 resultFrame.addEventListener(
@@ -1668,13 +1515,15 @@ resultFrame.addEventListener(
 
           finishScan();
 
+          reloadDoorPanel();
+
           scheduleOverviewRefresh();
 
         }
 
       },
 
-      150
+      180
 
     );
 
@@ -1684,7 +1533,7 @@ resultFrame.addEventListener(
 
 
 // =====================================================
-// DOKONČENÍ JEDNOHO SKENU
+// HOTOVO
 // =====================================================
 
 function finishScan() {
@@ -1720,6 +1569,19 @@ function finishScan() {
       'none';
 
 
+  // =================================================
+  // HLAVNÍ OPRAVA:
+  // už tam nezůstane "Naskenuj první kartičku".
+  // =================================================
+
+  cameraMessage.className =
+    'success';
+
+
+  cameraMessage.textContent =
+    '🟢 Připraveno na další kartičku';
+
+
   beep(
     920,
     0.11
@@ -1729,9 +1591,33 @@ function finishScan() {
 
 
 // =====================================================
+// DOOR PANEL
+// =====================================================
+
+function reloadDoorPanel() {
+
+  if (
+    !doorFrame
+  ) {
+
+    return;
+
+  }
+
+
+  doorFrame.src =
+
+    DOOR_PANEL_URL +
+
+    '&v=' +
+
+    Date.now();
+
+}
+
+
+// =====================================================
 // TABULKOVÉ PŘEHLEDY
-//
-// Až když je u dveří chvíli klid.
 // =====================================================
 
 function scheduleOverviewRefresh() {
@@ -1780,10 +1666,6 @@ function scheduleOverviewRefresh() {
 }
 
 
-// =====================================================
-// ZRUŠIT ČEKAJÍCÍ REFRESH
-// =====================================================
-
 function cancelOverviewRefresh() {
 
   if (
@@ -1804,7 +1686,7 @@ function cancelOverviewRefresh() {
 
 
 // =====================================================
-// ZMĚNIT KAMERU
+// ZMĚNA KAMERY
 // =====================================================
 
 async function changeCamera() {
@@ -1878,7 +1760,7 @@ async function changeCamera() {
 
 
 // =====================================================
-// HTML ESCAPE
+// ESCAPE
 // =====================================================
 
 function escapeHtml(
@@ -1888,26 +1770,11 @@ function escapeHtml(
   return String(
     value || ''
   )
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 
 }
 
