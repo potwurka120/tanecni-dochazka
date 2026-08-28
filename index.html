@@ -41,9 +41,7 @@
     }
 
 
-    /* =================================================
-       LEKCE + DATUM
-       ================================================= */
+    /* LEKCE */
 
     #eventContainer {
       margin-bottom: 8px;
@@ -58,9 +56,7 @@
     }
 
 
-    /* =================================================
-       KAMERA
-       ================================================= */
+    /* KAMERA */
 
     .camera-box {
       background: white;
@@ -132,33 +128,17 @@
     }
 
 
-    /* =================================================
-       VIDEO
-       ================================================= */
+    /* VIDEO */
 
     .video-box {
       position: relative;
-
-      width:
-        min(86vw, 330px);
-
-      max-width:
-        330px;
-
-      aspect-ratio:
-        1 / 1;
-
-      margin:
-        0 auto;
-
-      overflow:
-        hidden;
-
-      border-radius:
-        16px;
-
-      background:
-        #111;
+      width: min(86vw, 330px);
+      max-width: 330px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #111;
     }
 
     #qr-video {
@@ -169,21 +149,8 @@
       object-fit: cover;
     }
 
-    .code-outline-highlight {
-      stroke:
-        #27b54a !important;
 
-      stroke-width:
-        5 !important;
-
-      stroke-dasharray:
-        none !important;
-    }
-
-
-    /* =================================================
-       TEST KAMERY
-       ================================================= */
+    /* TEST */
 
     #cameraMessage {
       margin-top: 10px;
@@ -194,27 +161,18 @@
     }
 
     .success {
-      background:
-        #dff3df !important;
-
-      border:
-        2px solid #70b970;
+      background: #dff3df !important;
+      border: 2px solid #70b970;
     }
 
     .warning {
-      background:
-        #fff3cd !important;
-
-      border:
-        2px solid #e0b400;
+      background: #fff3cd !important;
+      border: 2px solid #e0b400;
     }
 
     .error {
-      background:
-        #ffe5e5 !important;
-
-      border:
-        2px solid #d66;
+      background: #ffe5e5 !important;
+      border: 2px solid #d66;
     }
 
     .big-code {
@@ -225,9 +183,7 @@
     }
 
 
-    /* =================================================
-       ZPRACOVÁVÁM
-       ================================================= */
+    /* ZPRACOVÁNÍ */
 
     #scanStatus {
       display: none;
@@ -241,9 +197,7 @@
     }
 
 
-    /* =================================================
-       POSLEDNÍ NAČTENÍ
-       ================================================= */
+    /* POSLEDNÍ NAČTENÍ */
 
     .result-box {
       margin-top: 10px;
@@ -261,7 +215,6 @@
       font-size: 12px;
       color: #777;
       font-weight: bold;
-      letter-spacing: 0.4px;
     }
 
     #scanResultFrame {
@@ -272,9 +225,7 @@
     }
 
 
-    /* =================================================
-       RUČNÍ NAČTENÍ
-       ================================================= */
+    /* RUČNÍ ZÁPIS */
 
     #manualContainer {
       display: none;
@@ -283,22 +234,14 @@
 
     #manualFrame {
       width: 100%;
-
-      /* základní výška zavřeného panelu */
       height: 82px;
-
       border: none;
       display: block;
       background: transparent;
-
-      transition:
-        height 0.15s ease;
     }
 
 
-    /* =================================================
-       HISTORIE
-       ================================================= */
+    /* HISTORIE */
 
     #historyBox {
       display: none;
@@ -326,19 +269,11 @@
 
     .history-item {
       display: grid;
-
-      grid-template-columns:
-        48px 52px 1fr;
-
+      grid-template-columns: 48px 52px 1fr;
       gap: 6px;
-
       align-items: center;
-
-      padding:
-        10px 2px;
-
-      border-bottom:
-        1px solid #eee;
+      padding: 10px 2px;
+      border-bottom: 1px solid #eee;
     }
 
     .history-item:last-child {
@@ -386,10 +321,6 @@
     }
 
 
-    /* =================================================
-       DOLNÍ OVLÁDÁNÍ
-       ================================================= */
-
     #bottomControls {
       display: none;
       margin-top: 12px;
@@ -418,19 +349,14 @@
   </h1>
 
 
-  <!-- LEKCE -->
-
   <div id="eventContainer">
 
     <iframe
-      id="eventFrame"
-      src="">
+      id="eventFrame">
     </iframe>
 
   </div>
 
-
-  <!-- KAMERA -->
 
   <div class="camera-box">
 
@@ -480,30 +406,21 @@
 
 
     <div id="cameraMessage">
-
       Čekám na výběr kamery.
-
     </div>
 
 
     <button id="confirmCameraButton">
-
       ✅ Kamera funguje – spustit docházku
-
     </button>
 
 
     <div id="scanStatus">
-
       ⏳ Zpracovávám...
-
     </div>
-
 
   </div>
 
-
-  <!-- POSLEDNÍ NAČTENÍ -->
 
   <div class="result-box">
 
@@ -533,19 +450,14 @@
   </div>
 
 
-  <!-- RUČNÍ ZÁPIS -->
-
   <div id="manualContainer">
 
     <iframe
-      id="manualFrame"
-      src="">
+      id="manualFrame">
     </iframe>
 
   </div>
 
-
-  <!-- HISTORIE -->
 
   <div id="historyBox">
 
@@ -555,10 +467,7 @@
 
 
     <div class="history-note">
-
       Obsahuje QR i ruční zápisy z tohoto telefonu.
-      Zrušením zápisu z Docházky se tato historie nemaže.
-
     </div>
 
 
@@ -587,14 +496,11 @@
   </div>
 
 
-  <!-- DOLNÍ OVLÁDÁNÍ -->
-
   <div id="bottomControls">
 
     <a
       id="homeLink"
-      class="link-button home-button"
-      href="#">
+      class="link-button home-button">
 
       ← Přejít na hlavní stránku
 
@@ -611,8 +517,6 @@
 
   </div>
 
-
-  <!-- FORMULÁŘ QR -->
 
   <form
     id="scanForm"
@@ -631,8 +535,6 @@
 
   </form>
 
-
-  <!-- OBNOVA PŘEHLEDŮ -->
 
   <iframe
     id="overviewFrame"
@@ -663,10 +565,6 @@ import QrScanner
   from 'https://cdn.jsdelivr.net/npm/qr-scanner@1.4.2/qr-scanner.min.js';
 
 
-// =====================================================
-// TVOJE APPS SCRIPT /exec URL
-// =====================================================
-
 const WEBAPP_URL =
   'https://script.google.com/macros/s/AKfycbz4AAoQh6esrTyXvW2YWtp_peuvgYWoGmAlYinO5Q-waWqyHiWqvQh_dpCyMmlHQ_uE/exec';
 
@@ -684,10 +582,6 @@ const MANUAL_PANEL_URL =
 const HOME_URL =
   WEBAPP_URL;
 
-
-// =====================================================
-// HISTORIE
-// =====================================================
 
 const HISTORY_KEY =
   'danceAttendanceScanHistory';
@@ -708,10 +602,6 @@ let historyExpanded =
 const processedMessages =
   new Set();
 
-
-// =====================================================
-// ELEMENTY
-// =====================================================
 
 const video =
   document.getElementById(
@@ -778,10 +668,6 @@ document
 eventFrame.src =
   EVENT_PANEL_URL;
 
-
-// =====================================================
-// STAV
-// =====================================================
 
 let selectedCameraId =
   '';
@@ -865,13 +751,11 @@ function beep(
 
 
     const oscillator =
-      audioContext
-        .createOscillator();
+      audioContext.createOscillator();
 
 
     const gain =
-      audioContext
-        .createGain();
+      audioContext.createGain();
 
 
     oscillator.connect(
@@ -898,11 +782,10 @@ function beep(
     );
 
 
-    gain.gain
-      .exponentialRampToValueAtTime(
-        0.001,
-        now + duration
-      );
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      now + duration
+    );
 
 
     oscillator.start(
@@ -935,7 +818,6 @@ const scanner =
     },
 
     {
-
       returnDetailedScanResult:
         true,
 
@@ -950,7 +832,6 @@ const scanner =
 
       preferredCamera:
         'environment'
-
     }
 
   );
@@ -1015,10 +896,6 @@ function saveScanHistory() {
 }
 
 
-// =====================================================
-// PŘIDÁNÍ QR SKENU DO HISTORIE
-// =====================================================
-
 function addScanToHistory(
   data
 ) {
@@ -1046,39 +923,20 @@ function addScanToHistory(
 
 
   if (
-    data.method ===
-    'Ručně'
+    data.method === 'Ručně' &&
+    data.success &&
+    data.resultType === 'new'
   ) {
 
-    if (
-      data.success &&
-      data.resultType ===
-        'new'
-    ) {
+    statusText =
+      'Zapsán/a ručně';
 
-      statusText =
-        'Zapsán/a ručně';
-
-      statusType =
-        'manual';
-
-    } else if (
-      data.success &&
-      data.resultType ===
-        'duplicate'
-    ) {
-
-      statusText =
-        'Už byl/a zapsán/a';
-
-      statusType =
-        'warning';
-    }
+    statusType =
+      'manual';
 
   } else if (
     data.success &&
-    data.resultType ===
-      'new'
+    data.resultType === 'new'
   ) {
 
     statusText =
@@ -1171,10 +1029,6 @@ function addScanToHistory(
   renderScanHistory();
 }
 
-
-// =====================================================
-// VYKRESLENÍ HISTORIE
-// =====================================================
 
 function renderScanHistory() {
 
@@ -1351,7 +1205,7 @@ window.clearScanHistory =
 
     if (
       !confirm(
-        'Opravdu vymazat historii skenování a ručních zápisů na tomto telefonu? Docházka v tabulce se tím nezmění.'
+        'Opravdu vymazat historii v tomto telefonu? Docházka v tabulce se tím nezmění.'
       )
     ) {
 
@@ -1481,8 +1335,7 @@ async function loadCameras() {
             function(option) {
 
               return (
-                option.value ===
-                saved
+                option.value === saved
               );
             }
 
@@ -1518,10 +1371,6 @@ async function loadCameras() {
   }
 }
 
-
-// =====================================================
-// TEST VYBRANÉ KAMERY
-// =====================================================
 
 async function startSelectedCamera() {
 
@@ -1626,11 +1475,6 @@ async function startSelectedCamera() {
 
   } catch (error) {
 
-    console.error(
-      error
-    );
-
-
     cameraMessage.className =
       'error';
 
@@ -1686,8 +1530,6 @@ function processQr(
   lastScanTime =
     now;
 
-
-  // TEST
 
   if (testMode) {
 
@@ -1747,8 +1589,6 @@ function processQr(
   }
 
 
-  // OSTRÁ DOCHÁZKA
-
   if (
     !attendanceMode ||
     scannerBusy
@@ -1774,10 +1614,6 @@ function processQr(
 }
 
 
-// =====================================================
-// POTVRZENÍ KAMERY
-// =====================================================
-
 function confirmCamera() {
 
   prepareAudio();
@@ -1786,20 +1622,6 @@ function confirmCamera() {
   if (
     !cameraTestSuccessful
   ) {
-
-    return;
-  }
-
-
-  if (
-    WEBAPP_URL ===
-    'MUJWEBAPPURL'
-  ) {
-
-    alert(
-      'Vlož WEBAPP_URL.'
-    );
-
 
     return;
   }
@@ -1866,7 +1688,6 @@ function confirmCamera() {
       'block';
 
 
-  // Zavřený panel začíná malý.
   manualFrame.style.height =
     '82px';
 
@@ -1910,10 +1731,6 @@ function confirmCamera() {
     '</html>';
 }
 
-
-// =====================================================
-// ODESLAT QR
-// =====================================================
 
 function submitQr(
   code
@@ -1969,7 +1786,7 @@ function submitQr(
 
 
 // =====================================================
-// ZPRÁVY Z IFRAME
+// ZPRÁVY
 // =====================================================
 
 window.addEventListener(
@@ -1992,34 +1809,25 @@ window.addEventListener(
     }
 
 
-    // ---------------------------------------------
-    // AUTOMATICKÁ VÝŠKA RUČNÍHO PANELU
-    // ---------------------------------------------
+    // RUČNÍ PANEL OTEVŘEN / ZAVŘEN
 
     if (
       data.type ===
-      'manual-panel-height'
+      'manual-panel-state'
     ) {
 
-      const height =
-        Number(
-          data.height
-        );
-
-
       if (
-        Number.isFinite(
-          height
-        ) &&
-        height > 0
+        data.expanded
       ) {
 
+        // Velký prostor pro vyhledávání.
         manualFrame.style.height =
-          Math.max(
-            82,
-            height + 4
-          ) +
-          'px';
+          '520px';
+
+      } else {
+
+        manualFrame.style.height =
+          '82px';
       }
 
 
@@ -2027,9 +1835,21 @@ window.addEventListener(
     }
 
 
-    // ---------------------------------------------
-    // DEDUPLIKACE
-    // ---------------------------------------------
+    // PO ZAČÁTKU HLEDÁNÍ
+    // ještě více prostoru pro až 10 výsledků.
+
+    if (
+      data.type ===
+      'manual-panel-searching'
+    ) {
+
+      manualFrame.style.height =
+        '680px';
+
+
+      return;
+    }
+
 
     if (
       data.messageId
@@ -2065,10 +1885,6 @@ window.addEventListener(
     }
 
 
-    // ---------------------------------------------
-    // QR SKEN
-    // ---------------------------------------------
-
     if (
       data.type ===
       'attendance-result'
@@ -2091,10 +1907,6 @@ window.addEventListener(
     }
 
 
-    // ---------------------------------------------
-    // RUČNÍ ZÁPIS
-    // ---------------------------------------------
-
     if (
       data.type ===
       'manual-attendance-result'
@@ -2111,10 +1923,6 @@ window.addEventListener(
       return;
     }
 
-
-    // ---------------------------------------------
-    // ZRUŠENÍ QR ZÁPISU
-    // ---------------------------------------------
 
     if (
       data.type ===
@@ -2141,8 +1949,6 @@ window.addEventListener(
           'none';
 
 
-      // Historie se nemaže.
-
       scheduleOverviewRefresh();
     }
 
@@ -2150,10 +1956,6 @@ window.addEventListener(
 
 );
 
-
-// =====================================================
-// HOTOVÝ QR SKEN
-// =====================================================
 
 function finishScan(
   data
@@ -2197,10 +1999,6 @@ function finishScan(
   }
 }
 
-
-// =====================================================
-// ZÁLOHA
-// =====================================================
 
 resultFrame.addEventListener(
 
@@ -2257,7 +2055,7 @@ resultFrame.addEventListener(
 
 
 // =====================================================
-// OBNOVA PŘEHLEDŮ
+// PŘEHLEDY
 // =====================================================
 
 function scheduleOverviewRefresh() {
@@ -2400,10 +2198,6 @@ async function changeCamera() {
 }
 
 
-// =====================================================
-// ESCAPE
-// =====================================================
-
 function escapeHtml(
   value
 ) {
@@ -2434,10 +2228,6 @@ function escapeHtml(
 }
 
 
-// =====================================================
-// TLAČÍTKA
-// =====================================================
-
 testCameraButton
   .addEventListener(
     'click',
@@ -2458,10 +2248,6 @@ changeCameraButton
     changeCamera
   );
 
-
-// =====================================================
-// START
-// =====================================================
 
 loadScanHistory();
 
