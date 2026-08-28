@@ -41,9 +41,7 @@
     }
 
 
-    /* =================================================
-       LEKCE
-       ================================================= */
+    /* LEKCE */
 
     #eventContainer {
       margin-bottom: 8px;
@@ -53,15 +51,13 @@
       display: block;
       width: 100%;
       height: 44px;
-      border: none;
+      border: 0;
       background: transparent;
       overflow: hidden;
     }
 
 
-    /* =================================================
-       KAMERA
-       ================================================= */
+    /* KAMERA */
 
     .camera-box {
       background: white;
@@ -133,9 +129,7 @@
     }
 
 
-    /* =================================================
-       VIDEO
-       ================================================= */
+    /* VIDEO */
 
     .video-box {
       position: relative;
@@ -157,9 +151,7 @@
     }
 
 
-    /* =================================================
-       KAMERA MESSAGE
-       ================================================= */
+    /* TEST KAMERY */
 
     #cameraMessage {
       margin-top: 10px;
@@ -192,9 +184,7 @@
     }
 
 
-    /* =================================================
-       ZPRACOVÁVÁM
-       ================================================= */
+    /* ZPRACOVÁNÍ */
 
     #scanStatus {
       display: none;
@@ -208,9 +198,7 @@
     }
 
 
-    /* =================================================
-       POSLEDNÍ NAČTENÍ
-       ================================================= */
+    /* POSLEDNÍ NAČTENÍ */
 
     .result-box {
       margin-top: 10px;
@@ -228,7 +216,6 @@
       font-size: 12px;
       color: #777;
       font-weight: bold;
-      letter-spacing: 0.4px;
     }
 
     #scanResultFrame {
@@ -236,19 +223,25 @@
       width: 100%;
       height: 220px;
       border: 0;
-      margin: 0;
-      padding: 0;
       overflow: hidden;
     }
 
 
-    /* =================================================
-       RUČNÍ ZÁPIS
-       ================================================= */
+    /* RUČNÍ ZÁPIS */
 
-    #manualContainer {
+    #manualArea {
       display: none;
       margin-top: 10px;
+    }
+
+    #manualToggle {
+      background: #222;
+      color: white;
+    }
+
+    #manualPanel {
+      display: none;
+      margin-top: 8px;
     }
 
     #manualFrame {
@@ -256,9 +249,10 @@
       width: 100%;
 
       /*
-       * Zavřený ruční panel.
+       * Pevná kompaktní výška.
+       * Výsledky se posouvají uvnitř iframe.
        */
-      height: 82px;
+      height: 355px;
 
       border: 0;
       background: transparent;
@@ -266,9 +260,7 @@
     }
 
 
-    /* =================================================
-       HISTORIE
-       ================================================= */
+    /* HISTORIE */
 
     #historyBox {
       display: none;
@@ -348,10 +340,6 @@
     }
 
 
-    /* =================================================
-       DOLNÍ OVLÁDÁNÍ
-       ================================================= */
-
     #bottomControls {
       display: none;
       margin-top: 12px;
@@ -380,8 +368,6 @@
   </h1>
 
 
-  <!-- LEKCE -->
-
   <div id="eventContainer">
 
     <iframe
@@ -391,8 +377,6 @@
 
   </div>
 
-
-  <!-- KAMERA -->
 
   <div class="camera-box">
 
@@ -458,7 +442,7 @@
   </div>
 
 
-  <!-- SPOLEČNÉ POSLEDNÍ NAČTENÍ -->
+  <!-- POSLEDNÍ NAČTENÍ -->
 
   <div class="result-box">
 
@@ -475,7 +459,7 @@
         <html>
         <body style='
           margin:0;
-          padding:40px 8px;
+          padding:45px 8px;
           overflow:hidden;
           font-family:Arial;
           text-align:center;
@@ -492,12 +476,25 @@
 
   <!-- RUČNÍ ZÁPIS -->
 
-  <div id="manualContainer">
+  <div id="manualArea">
 
-    <iframe
-      id="manualFrame"
-      scrolling="no">
-    </iframe>
+    <button
+      id="manualToggle"
+      onclick="toggleManualPanel()">
+
+      ✍️ Nemám kartičku – ruční načtení
+
+    </button>
+
+
+    <div id="manualPanel">
+
+      <iframe
+        id="manualFrame"
+        scrolling="no">
+      </iframe>
+
+    </div>
 
   </div>
 
@@ -541,8 +538,6 @@
   </div>
 
 
-  <!-- DOLNÍ OVLÁDÁNÍ -->
-
   <div id="bottomControls">
 
     <a
@@ -565,8 +560,6 @@
   </div>
 
 
-  <!-- QR FORM -->
-
   <form
     id="scanForm"
     method="POST"
@@ -584,8 +577,6 @@
 
   </form>
 
-
-  <!-- PŘEHLEDY -->
 
   <iframe
     id="overviewFrame"
@@ -617,7 +608,7 @@ import QrScanner
 
 
 // =====================================================
-// APPS SCRIPT URL
+// DOPLŇ SVOU APPS SCRIPT /exec URL
 // =====================================================
 
 const WEBAPP_URL =
@@ -762,6 +753,66 @@ let lastScanTime =
 
 let overviewRefreshTimer =
   null;
+
+
+// =====================================================
+// RUČNÍ PANEL
+// =====================================================
+
+window.toggleManualPanel =
+  function() {
+
+    const panel =
+      document.getElementById(
+        'manualPanel'
+      );
+
+
+    const button =
+      document.getElementById(
+        'manualToggle'
+      );
+
+
+    const opening =
+      panel.style.display !==
+      'block';
+
+
+    if (
+      opening
+    ) {
+
+      panel.style.display =
+        'block';
+
+
+      button.textContent =
+        '✖ Zavřít ruční načtení';
+
+
+      /*
+       * Iframe načteme až při prvním otevření.
+       */
+
+      if (
+        !manualFrame.src
+      ) {
+
+        manualFrame.src =
+          MANUAL_PANEL_URL;
+      }
+
+    } else {
+
+      panel.style.display =
+        'none';
+
+
+      button.textContent =
+        '✍️ Nemám kartičku – ruční načtení';
+    }
+  };
 
 
 // =====================================================
@@ -1299,24 +1350,12 @@ window.clearScanHistory =
 
 
 // =====================================================
-// SPOLEČNÉ POSLEDNÍ NAČTENÍ
+// RUČNÍ VÝSLEDEK DO POSLEDNÍHO NAČTENÍ
 // =====================================================
 
 function showManualAsLastRead(
   data
 ) {
-
-  const isNew =
-    data.success &&
-    data.resultType ===
-      'new';
-
-
-  const isDuplicate =
-    data.success &&
-    data.resultType ===
-      'duplicate';
-
 
   let background =
     '#ffe5e5';
@@ -1334,7 +1373,11 @@ function showManualAsLastRead(
     'Zápis se nepodařil';
 
 
-  if (isNew) {
+  if (
+    data.success &&
+    data.resultType ===
+      'new'
+  ) {
 
     background =
       '#dff3df';
@@ -1349,7 +1392,9 @@ function showManualAsLastRead(
       'Zapsán/a ručně';
 
   } else if (
-    isDuplicate
+    data.success &&
+    data.resultType ===
+      'duplicate'
   ) {
 
     background =
@@ -1380,98 +1425,69 @@ function showManualAsLastRead(
     );
 
 
-  /*
-   * Toto srcdoc úplně nahradí předchozí
-   * QR obsah iframe.
-   */
-
-  resultFrame.removeAttribute(
-    'src'
-  );
-
-
   resultFrame.srcdoc =
 
     '<!DOCTYPE html>' +
 
     '<html>' +
 
-    '<head>' +
-
-    '<meta name="viewport" content="width=device-width, initial-scale=1">' +
-
-    '<style>' +
-
-    '*{box-sizing:border-box;}' +
-
-    'html,body{' +
+    '<body style="' +
     'margin:0;' +
     'padding:0;' +
     'overflow:hidden;' +
     'font-family:Arial,sans-serif;' +
-    'background:transparent;' +
-    '}' +
+    '">' +
 
-    '.box{' +
-    'margin:5px;' +
+    '<div style="' +
     'height:200px;' +
+    'margin:5px;' +
     'display:flex;' +
     'flex-direction:column;' +
-    'align-items:center;' +
     'justify-content:center;' +
-    'background:' +
-    background +
-    ';' +
+    'align-items:center;' +
+    'text-align:center;' +
+    'border-radius:14px;' +
     'border:2px solid ' +
     border +
     ';' +
-    'border-radius:14px;' +
-    'padding:12px;' +
-    'text-align:center;' +
-    '}' +
+    'background:' +
+    background +
+    ';' +
+    '">' +
 
-    '.name{' +
+    '<div style="' +
     'font-size:27px;' +
     'font-weight:bold;' +
-    '}' +
+    '">' +
 
-    '.card{' +
-    'font-size:17px;' +
-    'font-weight:bold;' +
-    'margin-top:7px;' +
-    '}' +
-
-    '.detail{' +
-    'font-size:16px;' +
-    'margin-top:8px;' +
-    '}' +
-
-    '</style>' +
-
-    '</head>' +
-
-    '<body>' +
-
-    '<div class="box">' +
-
-    '<div class="name">' +
     icon +
     ' ' +
     safeName +
+
     '</div>' +
 
     (
       safeCard
         ? (
-            '<div class="card">Kartička ' +
+            '<div style="' +
+            'margin-top:7px;' +
+            'font-size:17px;' +
+            'font-weight:bold;' +
+            '">' +
+            'Kartička ' +
             safeCard +
             '</div>'
           )
         : ''
     ) +
 
-    '<div class="detail">' +
+    '<div style="' +
+    'margin-top:8px;' +
+    'font-size:16px;' +
+    '">' +
+
     detail +
+
     '</div>' +
 
     '</div>' +
@@ -1494,10 +1510,6 @@ async function loadCameras() {
       'block';
 
 
-    cameraMessage.className =
-      '';
-
-
     cameraMessage.textContent =
       '⏳ Povol kameru...';
 
@@ -1518,23 +1530,6 @@ async function loadCameras() {
 
     cameraSelect.innerHTML =
       '';
-
-
-    if (
-      !cameras ||
-      !cameras.length
-    ) {
-
-      cameraMessage.className =
-        'error';
-
-
-      cameraMessage.textContent =
-        '❌ Nebyla nalezena žádná kamera.';
-
-
-      return;
-    }
 
 
     cameras.forEach(
@@ -1570,44 +1565,37 @@ async function loadCameras() {
     );
 
 
-    try {
+    const saved =
+      localStorage.getItem(
+        'attendanceCameraId'
+      );
 
-      const saved =
-        localStorage.getItem(
-          'attendanceCameraId'
+
+    if (saved) {
+
+      const exists =
+        Array.from(
+          cameraSelect.options
+        )
+        .some(
+
+          function(option) {
+
+            return (
+              option.value ===
+              saved
+            );
+          }
+
         );
 
 
-      if (saved) {
+      if (exists) {
 
-        const exists =
-          Array.from(
-            cameraSelect.options
-          )
-          .some(
-
-            function(option) {
-
-              return (
-                option.value === saved
-              );
-            }
-
-          );
-
-
-        if (exists) {
-
-          cameraSelect.value =
-            saved;
-        }
+        cameraSelect.value =
+          saved;
       }
-
-    } catch (error) {}
-
-
-    cameraMessage.className =
-      '';
+    }
 
 
     cameraMessage.textContent =
@@ -1636,19 +1624,6 @@ async function startSelectedCamera() {
 
 
   if (!newCameraId) {
-
-    cameraMessage.style.display =
-      'block';
-
-
-    cameraMessage.className =
-      'warning';
-
-
-    cameraMessage.textContent =
-      '⚠️ Nejdřív vyber kameru.';
-
-
     return;
   }
 
@@ -1669,14 +1644,6 @@ async function startSelectedCamera() {
     false;
 
 
-  scannerBusy =
-    false;
-
-
-  pendingScan =
-    false;
-
-
   lastCode =
     '';
 
@@ -1690,18 +1657,6 @@ async function startSelectedCamera() {
     .remove(
       'visible'
     );
-
-
-  cameraMessage.style.display =
-    'block';
-
-
-  cameraMessage.className =
-    '';
-
-
-  cameraMessage.textContent =
-    '⏳ Přepínám kameru...';
 
 
   try {
@@ -1729,17 +1684,12 @@ async function startSelectedCamera() {
 
   } catch (error) {
 
-    console.error(
-      error
-    );
-
-
     cameraMessage.className =
       'error';
 
 
     cameraMessage.textContent =
-      '❌ Novou kameru se nepodařilo spustit.';
+      '❌ Kameru se nepodařilo spustit.';
   }
 }
 
@@ -1808,10 +1758,6 @@ function processQr(
       );
 
 
-      cameraMessage.style.display =
-        'block';
-
-
       cameraMessage.className =
         'success';
 
@@ -1830,18 +1776,7 @@ function processQr(
         .add(
           'visible'
         );
-
-
-      return;
     }
-
-
-    cameraMessage.className =
-      'warning';
-
-
-    cameraMessage.textContent =
-      '⚠️ QR nemá správný formát.';
 
 
     return;
@@ -1885,19 +1820,14 @@ function confirmCamera() {
   if (
     !cameraTestSuccessful
   ) {
-
     return;
   }
 
 
-  try {
-
-    localStorage.setItem(
-      'attendanceCameraId',
-      selectedCameraId
-    );
-
-  } catch (error) {}
+  localStorage.setItem(
+    'attendanceCameraId',
+    selectedCameraId
+  );
 
 
   testMode =
@@ -1912,16 +1842,8 @@ function confirmCamera() {
     false;
 
 
-  pendingScan =
-    false;
-
-
   lastCode =
     '';
-
-
-  lastScanTime =
-    0;
 
 
   document
@@ -1945,18 +1867,10 @@ function confirmCamera() {
 
   document
     .getElementById(
-      'manualContainer'
+      'manualArea'
     )
     .style.display =
       'block';
-
-
-  manualFrame.style.height =
-    '82px';
-
-
-  manualFrame.src =
-    MANUAL_PANEL_URL;
 
 
   document
@@ -1973,9 +1887,6 @@ function confirmCamera() {
     )
     .style.display =
       'block';
-
-
-  renderScanHistory();
 
 
   resultFrame.srcdoc =
@@ -2015,9 +1926,6 @@ function submitQr(
 
   pendingScan =
     true;
-
-
-  cancelOverviewRefresh();
 
 
   const status =
@@ -2077,38 +1985,9 @@ window.addEventListener(
       typeof data !==
         'object'
     ) {
-
       return;
     }
 
-
-    // =================================================
-    // RUČNÍ PANEL
-    // =================================================
-
-    if (
-      data.type ===
-      'manual-panel-state'
-    ) {
-
-      /*
-       * Teď už jen cca třetinová výška
-       * oproti minulé verzi.
-       */
-
-      manualFrame.style.height =
-        data.expanded
-          ? '390px'
-          : '82px';
-
-
-      return;
-    }
-
-
-    // =================================================
-    // DEDUPLIKACE
-    // =================================================
 
     if (
       data.messageId
@@ -2119,7 +1998,6 @@ window.addEventListener(
           data.messageId
         )
       ) {
-
         return;
       }
 
@@ -2144,10 +2022,6 @@ window.addEventListener(
     }
 
 
-    // =================================================
-    // QR
-    // =================================================
-
     if (
       data.type ===
       'attendance-result'
@@ -2170,18 +2044,13 @@ window.addEventListener(
     }
 
 
-    // =================================================
-    // RUČNÍ ZÁPIS
-    // =================================================
-
     if (
       data.type ===
       'manual-attendance-result'
     ) {
 
       /*
-       * Tohle vždy přepíše
-       * starou QR hlášku.
+       * Ruční zápis přepíše starý QR výsledek.
        */
 
       showManualAsLastRead(
@@ -2189,13 +2058,45 @@ window.addEventListener(
       );
 
 
-      /*
-       * Ruční zápis do historie.
-       */
-
       addScanToHistory(
         data
       );
+
+
+      /*
+       * Po úspěchu panel automaticky zavřeme.
+       */
+
+      if (
+        data.success &&
+        data.resultType ===
+          'new'
+      ) {
+
+        setTimeout(
+
+          function() {
+
+            document
+              .getElementById(
+                'manualPanel'
+              )
+              .style.display =
+                'none';
+
+
+            document
+              .getElementById(
+                'manualToggle'
+              )
+              .textContent =
+                '✍️ Nemám kartičku – ruční načtení';
+
+          },
+
+          900
+        );
+      }
 
 
       scheduleOverviewRefresh();
@@ -2204,10 +2105,6 @@ window.addEventListener(
       return;
     }
 
-
-    // =================================================
-    // UNDO
-    // =================================================
 
     if (
       data.type ===
@@ -2241,10 +2138,6 @@ window.addEventListener(
 
 );
 
-
-// =====================================================
-// QR HOTOVÝ
-// =====================================================
 
 function finishScan(
   data
@@ -2290,65 +2183,7 @@ function finishScan(
 
 
 // =====================================================
-// ZÁLOŽNÍ UVOLNĚNÍ
-// =====================================================
-
-resultFrame.addEventListener(
-
-  'load',
-
-  function() {
-
-    if (
-      !pendingScan
-    ) {
-
-      return;
-    }
-
-
-    setTimeout(
-
-      function() {
-
-        if (
-          !pendingScan
-        ) {
-
-          return;
-        }
-
-
-        pendingScan =
-          false;
-
-
-        scannerBusy =
-          false;
-
-
-        lastCode =
-          '';
-
-
-        document
-          .getElementById(
-            'scanStatus'
-          )
-          .style.display =
-            'none';
-
-      },
-
-      900
-    );
-  }
-
-);
-
-
-// =====================================================
-// PŘEHLEDY
+// OBNOVA PŘEHLEDŮ
 // =====================================================
 
 function scheduleOverviewRefresh() {
@@ -2444,10 +2279,6 @@ async function changeCamera() {
     '';
 
 
-  lastScanTime =
-    0;
-
-
   try {
 
     await scanner.pause(
@@ -2529,25 +2360,22 @@ function escapeHtml(
 // TLAČÍTKA
 // =====================================================
 
-testCameraButton
-  .addEventListener(
-    'click',
-    startSelectedCamera
-  );
+testCameraButton.addEventListener(
+  'click',
+  startSelectedCamera
+);
 
 
-confirmCameraButton
-  .addEventListener(
-    'click',
-    confirmCamera
-  );
+confirmCameraButton.addEventListener(
+  'click',
+  confirmCamera
+);
 
 
-changeCameraButton
-  .addEventListener(
-    'click',
-    changeCamera
-  );
+changeCameraButton.addEventListener(
+  'click',
+  changeCamera
+);
 
 
 // =====================================================
