@@ -193,7 +193,7 @@
 
 
     /* =================================================
-       ZPRACOVÁNÍ
+       ZPRACOVÁVÁM
        ================================================= */
 
     #scanStatus {
@@ -216,7 +216,6 @@
       margin-top: 10px;
       background: white;
       border-radius: 16px;
-
       overflow: hidden;
 
       box-shadow:
@@ -235,14 +234,10 @@
     #scanResultFrame {
       display: block;
       width: 100%;
-
-      /* Pevná výška, aby nebyl posuvník. */
       height: 220px;
-
       border: 0;
       margin: 0;
       padding: 0;
-
       overflow: hidden;
     }
 
@@ -254,13 +249,17 @@
     #manualContainer {
       display: none;
       margin-top: 10px;
-      overflow: visible;
     }
 
     #manualFrame {
       display: block;
       width: 100%;
+
+      /*
+       * Zavřený ruční panel.
+       */
       height: 82px;
+
       border: 0;
       background: transparent;
       overflow: hidden;
@@ -459,7 +458,7 @@
   </div>
 
 
-  <!-- JEDINÉ SPOLEČNÉ POSLEDNÍ NAČTENÍ -->
+  <!-- SPOLEČNÉ POSLEDNÍ NAČTENÍ -->
 
   <div class="result-box">
 
@@ -476,7 +475,7 @@
         <html>
         <body style='
           margin:0;
-          padding:35px 8px;
+          padding:40px 8px;
           overflow:hidden;
           font-family:Arial;
           text-align:center;
@@ -870,7 +869,7 @@ function beep(
 
 
 // =====================================================
-// SCANNER
+// QR SCANNER
 // =====================================================
 
 const scanner =
@@ -1300,20 +1299,20 @@ window.clearScanHistory =
 
 
 // =====================================================
-// RUČNÍ ZÁPIS JAKO POSLEDNÍ NAČTENÍ
+// SPOLEČNÉ POSLEDNÍ NAČTENÍ
 // =====================================================
 
 function showManualAsLastRead(
   data
 ) {
 
-  const success =
+  const isNew =
     data.success &&
     data.resultType ===
       'new';
 
 
-  const duplicate =
+  const isDuplicate =
     data.success &&
     data.resultType ===
       'duplicate';
@@ -1331,11 +1330,11 @@ function showManualAsLastRead(
     '❌';
 
 
-  let text =
+  let detail =
     'Zápis se nepodařil';
 
 
-  if (success) {
+  if (isNew) {
 
     background =
       '#dff3df';
@@ -1346,10 +1345,12 @@ function showManualAsLastRead(
     icon =
       '✅';
 
-    text =
+    detail =
       'Zapsán/a ručně';
 
-  } else if (duplicate) {
+  } else if (
+    isDuplicate
+  ) {
 
     background =
       '#fff3cd';
@@ -1360,7 +1361,7 @@ function showManualAsLastRead(
     icon =
       '⚠️';
 
-    text =
+    detail =
       'Už je v této lekci zapsán/a';
   }
 
@@ -1377,6 +1378,16 @@ function showManualAsLastRead(
       data.cardId ||
       ''
     );
+
+
+  /*
+   * Toto srcdoc úplně nahradí předchozí
+   * QR obsah iframe.
+   */
+
+  resultFrame.removeAttribute(
+    'src'
+  );
 
 
   resultFrame.srcdoc =
@@ -1403,6 +1414,11 @@ function showManualAsLastRead(
 
     '.box{' +
     'margin:5px;' +
+    'height:200px;' +
+    'display:flex;' +
+    'flex-direction:column;' +
+    'align-items:center;' +
+    'justify-content:center;' +
     'background:' +
     background +
     ';' +
@@ -1410,7 +1426,7 @@ function showManualAsLastRead(
     border +
     ';' +
     'border-radius:14px;' +
-    'padding:18px 12px;' +
+    'padding:12px;' +
     'text-align:center;' +
     '}' +
 
@@ -1455,7 +1471,7 @@ function showManualAsLastRead(
     ) +
 
     '<div class="detail">' +
-    text +
+    detail +
     '</div>' +
 
     '</div>' +
@@ -1573,8 +1589,7 @@ async function loadCameras() {
             function(option) {
 
               return (
-                option.value ===
-                saved
+                option.value === saved
               );
             }
 
@@ -1610,10 +1625,6 @@ async function loadCameras() {
   }
 }
 
-
-// =====================================================
-// TEST KAMERY
-// =====================================================
 
 async function startSelectedCamera() {
 
@@ -2048,7 +2059,7 @@ function submitQr(
 
 
 // =====================================================
-// ZPRÁVY Z IFRAME
+// ZPRÁVY
 // =====================================================
 
 window.addEventListener(
@@ -2072,7 +2083,7 @@ window.addEventListener(
 
 
     // =================================================
-    // RUČNÍ PANEL OTEVŘEN / ZAVŘEN
+    // RUČNÍ PANEL
     // =================================================
 
     if (
@@ -2080,39 +2091,15 @@ window.addEventListener(
       'manual-panel-state'
     ) {
 
-      if (
-        data.expanded
-      ) {
-
-        // Velká záloha.
-        // Skutečná výška se následně
-        // nastaví přes manual-panel-height.
-
-        manualFrame.style.height =
-          '900px';
-
-      } else {
-
-        manualFrame.style.height =
-          '82px';
-      }
-
-
-      return;
-    }
-
-
-    // =================================================
-    // PŘI HLEDÁNÍ
-    // =================================================
-
-    if (
-      data.type ===
-      'manual-panel-searching'
-    ) {
+      /*
+       * Teď už jen cca třetinová výška
+       * oproti minulé verzi.
+       */
 
       manualFrame.style.height =
-        '1000px';
+        data.expanded
+          ? '390px'
+          : '82px';
 
 
       return;
@@ -2120,42 +2107,7 @@ window.addEventListener(
 
 
     // =================================================
-    // SKUTEČNÁ VÝŠKA OBSAHU
-    // =================================================
-
-    if (
-      data.type ===
-      'manual-panel-height'
-    ) {
-
-      const height =
-        Number(
-          data.height
-        );
-
-
-      if (
-        Number.isFinite(
-          height
-        ) &&
-        height > 0
-      ) {
-
-        manualFrame.style.height =
-          Math.max(
-            82,
-            height + 20
-          ) +
-          'px';
-      }
-
-
-      return;
-    }
-
-
-    // =================================================
-    // DEDUPLIKACE ZPRÁV
+    // DEDUPLIKACE
     // =================================================
 
     if (
@@ -2193,7 +2145,7 @@ window.addEventListener(
 
 
     // =================================================
-    // QR VÝSLEDEK
+    // QR
     // =================================================
 
     if (
@@ -2219,7 +2171,7 @@ window.addEventListener(
 
 
     // =================================================
-    // RUČNÍ VÝSLEDEK
+    // RUČNÍ ZÁPIS
     // =================================================
 
     if (
@@ -2227,16 +2179,19 @@ window.addEventListener(
       'manual-attendance-result'
     ) {
 
-      // Přepíše stejné POSLEDNÍ NAČTENÍ,
-      // které používá QR.
+      /*
+       * Tohle vždy přepíše
+       * starou QR hlášku.
+       */
 
       showManualAsLastRead(
         data
       );
 
 
-      // A zároveň se zapíše
-      // do historie telefonu.
+      /*
+       * Ruční zápis do historie.
+       */
 
       addScanToHistory(
         data
@@ -2251,7 +2206,7 @@ window.addEventListener(
 
 
     // =================================================
-    // ZRUŠENÍ QR ZÁPISU
+    // UNDO
     // =================================================
 
     if (
