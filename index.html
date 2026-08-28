@@ -42,22 +42,22 @@
     h1 {
       text-align: center;
       font-size: 25px;
-      margin: 6px 0 10px;
+      margin: 6px 0 4px;
     }
 
 
     /* =================================================
-       LEKCE
+       LEKCE + DATUM
        ================================================= */
 
     #eventContainer {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     #eventFrame {
       display: block;
       width: 100%;
-      height: 58px;
+      height: 44px;
       border: none;
       background: transparent;
     }
@@ -71,6 +71,7 @@
       background: white;
       border-radius: 16px;
       padding: 12px;
+
       box-shadow:
         0 2px 8px
         rgba(0,0,0,0.08);
@@ -142,13 +143,27 @@
 
     .video-box {
       position: relative;
-      width: min(86vw, 330px);
-      max-width: 330px;
-      aspect-ratio: 1 / 1;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 16px;
-      background: #111;
+
+      width:
+        min(86vw, 330px);
+
+      max-width:
+        330px;
+
+      aspect-ratio:
+        1 / 1;
+
+      margin:
+        0 auto;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        16px;
+
+      background:
+        #111;
     }
 
     #qr-video {
@@ -160,9 +175,14 @@
     }
 
     .code-outline-highlight {
-      stroke: #27b54a !important;
-      stroke-width: 5 !important;
-      stroke-dasharray: none !important;
+      stroke:
+        #27b54a !important;
+
+      stroke-width:
+        5 !important;
+
+      stroke-dasharray:
+        none !important;
     }
 
 
@@ -179,18 +199,27 @@
     }
 
     .success {
-      background: #dff3df !important;
-      border: 2px solid #70b970;
+      background:
+        #dff3df !important;
+
+      border:
+        2px solid #70b970;
     }
 
     .warning {
-      background: #fff3cd !important;
-      border: 2px solid #e0b400;
+      background:
+        #fff3cd !important;
+
+      border:
+        2px solid #e0b400;
     }
 
     .error {
-      background: #ffe5e5 !important;
-      border: 2px solid #d66;
+      background:
+        #ffe5e5 !important;
+
+      border:
+        2px solid #d66;
     }
 
     .big-code {
@@ -207,12 +236,20 @@
 
     #scanStatus {
       display: none;
+
       margin-top: 10px;
+
       padding: 11px;
+
       border-radius: 11px;
+
       background: #fff3cd;
-      border: 2px solid #e0b400;
+
+      border:
+        2px solid #e0b400;
+
       text-align: center;
+
       font-weight: bold;
     }
 
@@ -226,23 +263,36 @@
       background: white;
       border-radius: 16px;
       overflow: hidden;
+
       box-shadow:
         0 2px 8px
         rgba(0,0,0,0.08);
     }
 
     .result-label {
-      padding: 11px 13px 0;
-      font-size: 12px;
-      color: #777;
-      font-weight: bold;
-      letter-spacing: 0.4px;
+      padding:
+        11px 13px 0;
+
+      font-size:
+        12px;
+
+      color:
+        #777;
+
+      font-weight:
+        bold;
+
+      letter-spacing:
+        0.4px;
     }
 
     #scanResultFrame {
       width: 100%;
+
       min-height: 170px;
+
       border: none;
+
       display: block;
     }
 
@@ -271,10 +321,15 @@
 
     #historyBox {
       display: none;
+
       margin-top: 10px;
+
       padding: 15px;
+
       background: white;
+
       border-radius: 16px;
+
       box-shadow:
         0 2px 8px
         rgba(0,0,0,0.08);
@@ -294,11 +349,17 @@
 
     .history-item {
       display: grid;
+
       grid-template-columns:
         48px 52px 1fr;
+
       gap: 6px;
+
       align-items: center;
-      padding: 10px 2px;
+
+      padding:
+        10px 2px;
+
       border-bottom:
         1px solid #eee;
     }
@@ -371,18 +432,14 @@
 <div class="container">
 
 
-  <!-- =================================================
-       1. NADPIS
-       ================================================= -->
+  <!-- 1. NADPIS -->
 
   <h1>
     💃 Taneční docházka
   </h1>
 
 
-  <!-- =================================================
-       2. AKTUÁLNÍ LEKCE + DATUM
-       ================================================= -->
+  <!-- 2. LEKCE + DATUM -->
 
   <div id="eventContainer">
 
@@ -394,9 +451,7 @@
   </div>
 
 
-  <!-- =================================================
-       3. SKENER
-       ================================================= -->
+  <!-- 3. SKENER -->
 
   <div class="camera-box">
 
@@ -445,8 +500,6 @@
     </div>
 
 
-    <!-- Toto je viditelné pouze při testu kamery -->
-
     <div id="cameraMessage">
 
       Čekám na výběr kamery.
@@ -461,8 +514,6 @@
     </button>
 
 
-    <!-- V ostrém režimu se ukáže pouze krátce -->
-
     <div id="scanStatus">
 
       ⏳ Zpracovávám...
@@ -473,9 +524,7 @@
   </div>
 
 
-  <!-- =================================================
-       4. POSLEDNÍ NAČTENÍ
-       ================================================= -->
+  <!-- 4. POSLEDNÍ NAČTENÍ -->
 
   <div class="result-box">
 
@@ -505,9 +554,7 @@
   </div>
 
 
-  <!-- =================================================
-       5. RUČNÍ NAČTENÍ
-       ================================================= -->
+  <!-- 5. RUČNÍ NAČTENÍ -->
 
   <div id="manualContainer">
 
@@ -519,16 +566,12 @@
   </div>
 
 
-  <!-- =================================================
-       6. HISTORIE TELEFONU
-       ================================================= -->
+  <!-- 6. HISTORIE -->
 
   <div id="historyBox">
 
     <div class="history-title">
-
       📋 Historie v tomto telefonu
-
     </div>
 
 
@@ -564,10 +607,8 @@
   </div>
 
 
-  <!-- =================================================
-       7. HLAVNÍ STRÁNKA
-       8. ZMĚNA KAMERY
-       ================================================= -->
+  <!-- 7. HLAVNÍ STRÁNKA -->
+  <!-- 8. ZMĚNA KAMERY -->
 
   <div id="bottomControls">
 
@@ -592,9 +633,7 @@
   </div>
 
 
-  <!-- =================================================
-       FORMULÁŘ QR
-       ================================================= -->
+  <!-- QR FORM -->
 
   <form
     id="scanForm"
@@ -614,9 +653,7 @@
   </form>
 
 
-  <!-- =================================================
-       OBNOVA TABULKOVÝCH PŘEHLEDŮ
-       ================================================= -->
+  <!-- OBNOVA PŘEHLEDŮ -->
 
   <iframe
     id="overviewFrame"
@@ -657,12 +694,12 @@ const WEBAPP_URL =
 
 const EVENT_PANEL_URL =
   WEBAPP_URL +
-  '?page=door&view=event';
+  '?page=event';
 
 
 const MANUAL_PANEL_URL =
   WEBAPP_URL +
-  '?page=door&view=manual';
+  '?page=door';
 
 
 const HOME_URL =
@@ -670,7 +707,7 @@ const HOME_URL =
 
 
 // =====================================================
-// HISTORIE TELEFONU
+// HISTORIE
 // =====================================================
 
 const HISTORY_KEY =
@@ -759,7 +796,7 @@ document
     HOME_URL;
 
 
-// Lekci zobrazíme okamžitě nahoře.
+// Lekce nahoře.
 
 eventFrame.src =
   EVENT_PANEL_URL;
@@ -858,7 +895,9 @@ function beep(
       audioContext.createGain();
 
 
-    oscillator.connect(gain);
+    oscillator.connect(
+      gain
+    );
 
 
     gain.connect(
@@ -887,7 +926,9 @@ function beep(
       );
 
 
-    oscillator.start(now);
+    oscillator.start(
+      now
+    );
 
 
     oscillator.stop(
@@ -909,7 +950,9 @@ const scanner =
 
     function(result) {
 
-      processQr(result);
+      processQr(
+        result
+      );
     },
 
     {
@@ -951,11 +994,15 @@ function loadScanHistory() {
     if (saved) {
 
       const parsed =
-        JSON.parse(saved);
+        JSON.parse(
+          saved
+        );
 
 
       if (
-        Array.isArray(parsed)
+        Array.isArray(
+          parsed
+        )
       ) {
 
         scanHistory =
@@ -989,7 +1036,9 @@ function saveScanHistory() {
 }
 
 
-function addScanToHistory(data) {
+function addScanToHistory(
+  data
+) {
 
   const now =
     new Date();
@@ -999,8 +1048,11 @@ function addScanToHistory(data) {
     now.toLocaleTimeString(
       'cs-CZ',
       {
-        hour: '2-digit',
-        minute: '2-digit'
+        hour:
+          '2-digit',
+
+        minute:
+          '2-digit'
       }
     );
 
@@ -1015,7 +1067,8 @@ function addScanToHistory(data) {
 
   if (
     data.success &&
-    data.resultType === 'new'
+    data.resultType ===
+      'new'
   ) {
 
     statusText =
@@ -1075,10 +1128,12 @@ function addScanToHistory(data) {
 
   scanHistory.unshift({
 
-    time: time,
+    time:
+      time,
 
     cardId:
-      data.cardId || '?',
+      data.cardId ||
+      '?',
 
     name:
       data.name ||
@@ -1091,7 +1146,8 @@ function addScanToHistory(data) {
       statusType,
 
     event:
-      data.event || ''
+      data.event ||
+      ''
 
   });
 
@@ -1128,7 +1184,9 @@ function renderScanHistory() {
     '';
 
 
-  if (!scanHistory.length) {
+  if (
+    !scanHistory.length
+  ) {
 
     container.innerHTML =
       '<div style="color:#777;padding:8px 0;">Zatím žádný sken.</div>';
@@ -1144,7 +1202,10 @@ function renderScanHistory() {
 
   scanHistory.forEach(
 
-    function(item, index) {
+    function(
+      item,
+      index
+    ) {
 
       const div =
         document.createElement(
@@ -1224,10 +1285,24 @@ function renderScanHistory() {
         item.status;
 
 
-      div.appendChild(time);
-      div.appendChild(card);
-      div.appendChild(name);
-      div.appendChild(status);
+      div.appendChild(
+        time
+      );
+
+
+      div.appendChild(
+        card
+      );
+
+
+      div.appendChild(
+        name
+      );
+
+
+      div.appendChild(
+        status
+      );
 
 
       container.appendChild(
@@ -1290,7 +1365,7 @@ window.clearScanHistory =
 
 
 // =====================================================
-// KAMERY
+// NAČTENÍ KAMER
 // =====================================================
 
 async function loadCameras() {
@@ -1318,7 +1393,9 @@ async function loadCameras() {
       );
 
 
-    await scanner.pause(true);
+    await scanner.pause(
+      true
+    );
 
 
     cameraSelect.innerHTML =
@@ -1344,7 +1421,10 @@ async function loadCameras() {
 
     cameras.forEach(
 
-      function(camera, index) {
+      function(
+        camera,
+        index
+      ) {
 
         const option =
           document.createElement(
@@ -1372,6 +1452,8 @@ async function loadCameras() {
     );
 
 
+    // Zapamatovaná kamera.
+
     try {
 
       const saved =
@@ -1387,6 +1469,7 @@ async function loadCameras() {
             cameraSelect.options
           )
           .some(
+
             function(option) {
 
               return (
@@ -1394,6 +1477,7 @@ async function loadCameras() {
                 saved
               );
             }
+
           );
 
 
@@ -1465,20 +1549,26 @@ async function startSelectedCamera() {
   testMode =
     true;
 
+
   attendanceMode =
     false;
+
 
   cameraTestSuccessful =
     false;
 
+
   scannerBusy =
     false;
+
 
   pendingScan =
     false;
 
+
   lastCode =
     '';
+
 
   lastScanTime =
     0;
@@ -1505,7 +1595,9 @@ async function startSelectedCamera() {
 
   try {
 
-    await scanner.pause(true);
+    await scanner.pause(
+      true
+    );
 
 
     await scanner.setCamera(
@@ -1526,7 +1618,9 @@ async function startSelectedCamera() {
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      error
+    );
 
 
     cameraMessage.className =
@@ -1543,7 +1637,9 @@ async function startSelectedCamera() {
 // QR
 // =====================================================
 
-function processQr(scanResult) {
+function processQr(
+  scanResult
+) {
 
   const code =
     String(
@@ -1583,14 +1679,14 @@ function processQr(scanResult) {
     now;
 
 
-  // =================================================
   // TEST KAMERY
-  // =================================================
 
   if (testMode) {
 
     if (
-      /^[MF]\d+$/.test(code)
+      /^[MF]\d+$/.test(
+        code
+      )
     ) {
 
       cameraTestSuccessful =
@@ -1614,7 +1710,9 @@ function processQr(scanResult) {
       cameraMessage.innerHTML =
         '✅ Kamera funguje' +
         '<span class="big-code">' +
-        escapeHtml(code) +
+        escapeHtml(
+          code
+        ) +
         '</span>';
 
 
@@ -1641,9 +1739,7 @@ function processQr(scanResult) {
   }
 
 
-  // =================================================
   // OSTRÁ DOCHÁZKA
-  // =================================================
 
   if (
     !attendanceMode ||
@@ -1655,19 +1751,23 @@ function processQr(scanResult) {
 
 
   if (
-    !/^[MF]\d+$/.test(code)
+    !/^[MF]\d+$/.test(
+      code
+    )
   ) {
 
     return;
   }
 
 
-  submitQr(code);
+  submitQr(
+    code
+  );
 }
 
 
 // =====================================================
-// SPUSTIT DOCHÁZKU
+// SPUSTIT OSTRÝ REŽIM
 // =====================================================
 
 function confirmCamera() {
@@ -1731,8 +1831,6 @@ function confirmCamera() {
     0;
 
 
-  // Výběr kamery pryč.
-
   document
     .getElementById(
       'setupControls'
@@ -1748,7 +1846,7 @@ function confirmCamera() {
     );
 
 
-  // A hlavně odstraníme
+  // V ostrém režimu už žádné
   // "Připraveno na další kartičku".
 
   cameraMessage.style.display =
@@ -1779,7 +1877,7 @@ function confirmCamera() {
       'block';
 
 
-  // Dolní tlačítka.
+  // Dolní ovládání.
 
   document
     .getElementById(
@@ -1813,7 +1911,9 @@ function confirmCamera() {
 // ODESLAT QR
 // =====================================================
 
-function submitQr(code) {
+function submitQr(
+  code
+) {
 
   scannerBusy =
     true;
@@ -1865,7 +1965,7 @@ function submitQr(code) {
 
 
 // =====================================================
-// ODPOVĚĎ APPS SCRIPTU
+// ZPRÁVY Z APPS SCRIPTU
 // =====================================================
 
 window.addEventListener(
@@ -1880,7 +1980,8 @@ window.addEventListener(
 
     if (
       !data ||
-      typeof data !== 'object'
+      typeof data !==
+        'object'
     ) {
 
       return;
@@ -1907,6 +2008,7 @@ window.addEventListener(
 
 
       setTimeout(
+
         function() {
 
           processedMessages.delete(
@@ -1914,19 +2016,21 @@ window.addEventListener(
           );
 
         },
+
         15000
       );
     }
 
 
-    // =================================================
-    // VÝSLEDEK SKENU
-    // =================================================
+    // VÝSLEDEK QR
 
     if (
       data.type ===
       'attendance-result'
     ) {
+
+      // Do historie ihned.
+      // Žádný další dotaz do tabulky.
 
       addScanToHistory(
         data
@@ -1945,11 +2049,7 @@ window.addEventListener(
     }
 
 
-    // =================================================
-    // ZRUŠENÍ ZÁPISU
-    //
-    // Historie zůstává.
-    // =================================================
+    // ZRUŠENÍ POSLEDNÍHO ZÁPISU
 
     if (
       data.type ===
@@ -1976,6 +2076,8 @@ window.addEventListener(
           'none';
 
 
+      // Historie se záměrně nemaže.
+
       scheduleOverviewRefresh();
     }
 
@@ -1988,7 +2090,9 @@ window.addEventListener(
 // HOTOVÝ SKEN
 // =====================================================
 
-function finishScan(data) {
+function finishScan(
+  data
+) {
 
   pendingScan =
     false;
@@ -2006,8 +2110,6 @@ function finishScan(data) {
     Date.now();
 
 
-  // Hláška "Zpracovávám" zmizí.
-
   document
     .getElementById(
       'scanStatus'
@@ -2016,11 +2118,8 @@ function finishScan(data) {
       'none';
 
 
-  // Žádná hláška "Připraveno..."
-  // se už nezobrazuje.
-
-
-  // Pípnutí pouze při novém zápisu.
+  // Pípnutí pouze při skutečně
+  // novém zápisu.
 
   if (
     data &&
@@ -2038,7 +2137,7 @@ function finishScan(data) {
 
 
 // =====================================================
-// ZÁLOHA
+// ZÁLOŽNÍ UVOLNĚNÍ SKENERU
 // =====================================================
 
 resultFrame.addEventListener(
@@ -2047,7 +2146,9 @@ resultFrame.addEventListener(
 
   function() {
 
-    if (!pendingScan) {
+    if (
+      !pendingScan
+    ) {
 
       return;
     }
@@ -2057,7 +2158,9 @@ resultFrame.addEventListener(
 
       function() {
 
-        if (!pendingScan) {
+        if (
+          !pendingScan
+        ) {
 
           return;
         }
@@ -2092,7 +2195,7 @@ resultFrame.addEventListener(
 
 
 // =====================================================
-// PŘEHLEDY PO PAUZE
+// OBNOVA TABULKOVÝCH PŘEHLEDŮ PO PAUZE
 // =====================================================
 
 function scheduleOverviewRefresh() {
@@ -2109,7 +2212,9 @@ function scheduleOverviewRefresh() {
           null;
 
 
-        if (scannerBusy) {
+        if (
+          scannerBusy
+        ) {
 
           scheduleOverviewRefresh();
 
@@ -2154,7 +2259,7 @@ function cancelOverviewRefresh() {
 
 
 // =====================================================
-// ZMĚNA VÝBĚRU KAMERY
+// ZMĚNA KAMERY
 // =====================================================
 
 async function changeCamera() {
@@ -2192,12 +2297,12 @@ async function changeCamera() {
 
   try {
 
-    await scanner.pause(true);
+    await scanner.pause(
+      true
+    );
 
   } catch (error) {}
 
-
-  // Výběr kamer zase zobrazíme.
 
   document
     .getElementById(
@@ -2213,8 +2318,6 @@ async function changeCamera() {
       'visible'
     );
 
-
-  // Testovací hlášky opět povolíme.
 
   cameraMessage.style.display =
     'block';
@@ -2239,14 +2342,33 @@ async function changeCamera() {
 // ESCAPE
 // =====================================================
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
-  return String(value || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return String(
+    value || ''
+  )
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
+    );
 }
 
 
