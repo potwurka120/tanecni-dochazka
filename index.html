@@ -341,7 +341,7 @@
 
 
     #bottomControls {
-      display: none;
+      display: block;
       margin-top: 12px;
       padding-bottom: 30px;
     }
@@ -443,14 +443,7 @@
 
   </div>
 
-        <a
-  id="homeLink"
-  class="link-button home-button"
-  href="#">
-
-  ← Zpět na hlavní stránku
-
-</a>
+        
 
   <!-- POSLEDNÍ NAČTENÍ -->
 
@@ -561,7 +554,8 @@
 
     <button
       id="changeCameraButton"
-      class="secondary">
+      class="secondary"
+      style="display:none;">
 
       📷 Změnit výběr kamery
 
@@ -1959,6 +1953,13 @@ function confirmCamera() {
     )
     .style.display =
       'block';
+  
+  document
+  .getElementById(
+    'changeCameraButton'
+  )
+  .style.display =
+    'block';
 
 
   resultFrame.srcdoc =
