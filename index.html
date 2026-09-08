@@ -1360,14 +1360,11 @@ function showManualAsLastRead(
   let background =
     '#ffe5e5';
 
-
   let border =
     '#d66';
 
-
   let icon =
     '❌';
-
 
   let detail =
     'Zápis se nepodařil';
@@ -1391,6 +1388,54 @@ function showManualAsLastRead(
     detail =
       'Zapsán/a ručně';
 
+
+    // 2. ZAPOMENUTÍ KARTIČKY
+
+    if (
+      data.manualCount === 2
+    ) {
+
+      background =
+        '#fff3cd';
+
+      border =
+        '#e0b400';
+
+      icon =
+        '⚠️';
+
+      detail =
+        data.warning ||
+        'Kartička zapomenuta podruhé.';
+
+    }
+
+
+    // 3. A DALŠÍ ZAPOMENUTÍ
+
+    else if (
+      data.manualCount >= 3
+    ) {
+
+      background =
+        '#ffe5e5';
+
+      border =
+        '#d66';
+
+      icon =
+        '🛒';
+
+      detail =
+        data.warning ||
+        (
+          'Kartička zapomenuta ' +
+          data.manualCount +
+          '×. Je potřeba vydat novou kartičku.'
+        );
+
+    }
+
   } else if (
     data.success &&
     data.resultType ===
@@ -1408,6 +1453,7 @@ function showManualAsLastRead(
 
     detail =
       'Už je v této lekci zapsán/a';
+
   }
 
 
@@ -1421,6 +1467,13 @@ function showManualAsLastRead(
   const safeCard =
     escapeHtml(
       data.cardId ||
+      ''
+    );
+
+
+  const safeDetail =
+    escapeHtml(
+      detail ||
       ''
     );
 
@@ -1441,6 +1494,8 @@ function showManualAsLastRead(
     '<div style="' +
     'height:200px;' +
     'margin:5px;' +
+    'padding:0 14px;' +
+    'box-sizing:border-box;' +
     'display:flex;' +
     'flex-direction:column;' +
     'justify-content:center;' +
@@ -1484,9 +1539,16 @@ function showManualAsLastRead(
     '<div style="' +
     'margin-top:8px;' +
     'font-size:16px;' +
-    '">' +
+    'line-height:1.35;' +
+    'font-weight:' +
+    (
+      data.manualCount >= 2
+        ? 'bold'
+        : 'normal'
+    ) +
+    ';">' +
 
-    detail +
+    safeDetail +
 
     '</div>' +
 
